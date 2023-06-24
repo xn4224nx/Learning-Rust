@@ -1,4 +1,5 @@
 /* static == global */
+/* static == global */
 static HELLO_WORLD: &str = "Hello world!";
 static mut COUNTER: u32 = 0;
 
