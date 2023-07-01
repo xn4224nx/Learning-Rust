@@ -10,5 +10,5 @@ OUTDIR="./expected"
 echo "Hello there" > $OUTDIR/echo_output_0.txt
 echo "Hello" "there" > $OUTDIR/echo_output_1.txt
 echo -n "Hello there" > $OUTDIR/echo_output_2.txt
-echo -n "Hello" "there" > $OUTDIR/echo_output_4.txt
+echo -n "Hello" "there" > $OUTDIR/echo_output_3.txt
 
