@@ -12,6 +12,21 @@ const COMP_FILES: &[&str] = &[
     "tests/expected/echo_output_3.txt",
 ];
 
+fn run_success(args: &[&str], expected_file: &str) -> TestResult {
+    
+    /* Read the expected string from file */
+    let expected_output = fs::read_to_string(expected_file)?;
+    
+    /* Initalise the command, add arguments and test for success */
+    Command::cargo_bin("test_for_echo")?
+                .args(args)
+                .assert()
+                .success()
+                .stdout(expected_output);
+     
+     return Ok(())
+}
+
 #[test]
 fn dies_no_args() -> TestResult {
     /* Call the program without arguments */
@@ -26,26 +41,22 @@ fn dies_no_args() -> TestResult {
 }
 
 #[test]
-fn runs_with_args() -> TestResult  {
-    /* Call the program with valid arguments */
-    let mut cmd = Command::cargo_bin("test_for_echo")?;
-
-    /* Check that it passed with the argumen `hello` */
-    cmd.arg("hello").assert().success();
-    
-    return Ok(())
+fn echo_output_0() -> TestResult {
+    run_success(&["Hello there"], COMP_FILES[0])
 }
 
 #[test]
-fn match_echo_output_0() -> TestResult  {
-    /* Read the test string from file */
-    let expected = fs::read_to_string(COMP_FILES[0])?;
-
-    /* Run the program */
-    let mut cmd = Command::cargo_bin("test_for_echo")?;
-
-    /* Give the program arguments and check the result */
-    cmd.arg("Hello there").assert().success().stdout(expected);
-    
-    return Ok(())
+fn echo_output_1() -> TestResult {
+    run_success(&["Hello", "there"], COMP_FILES[1])
 }
+
+#[test]
+fn echo_output_2() -> TestResult {
+    run_success(&["Hello there", "-n"], COMP_FILES[2])
+}
+
+#[test]
+fn echo_output_3() -> TestResult {
+    run_success(&["-n", "Hello there"], COMP_FILES[3])
+}
+
