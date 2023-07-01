@@ -13,18 +13,17 @@ const COMP_FILES: &[&str] = &[
 ];
 
 fn run_success(args: &[&str], expected_file: &str) -> TestResult {
-    
     /* Read the expected string from file */
     let expected_output = fs::read_to_string(expected_file)?;
-    
+
     /* Initalise the command, add arguments and test for success */
     Command::cargo_bin("test_for_echo")?
-                .args(args)
-                .assert()
-                .success()
-                .stdout(expected_output);
-     
-     return Ok(())
+        .args(args)
+        .assert()
+        .success()
+        .stdout(expected_output);
+
+    return Ok(());
 }
 
 #[test]
@@ -36,8 +35,8 @@ fn dies_no_args() -> TestResult {
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("USAGE"));
-    
-    return Ok(())
+
+    return Ok(());
 }
 
 #[test]
@@ -59,4 +58,3 @@ fn echo_output_2() -> TestResult {
 fn echo_output_3() -> TestResult {
     run_success(&["-n", "Hello there"], COMP_FILES[3])
 }
-
