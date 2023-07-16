@@ -28,20 +28,26 @@ pub fn get_args() -> MyResult<Config> {
             Arg::with_name("files")
                 .value_name("FILES")
                 .help("Files to read and combined.")
+                .multiple(true)
+                .default_value("-")
                 .required(true)
                 .min_values(1)
         )
         .arg(
             Arg::with_name("number_lines")
                 .short("n")
+                .long("number")
                 .help("Number all output lines.")
-                .takes_value(false),
+                .takes_value(false)
+                .conflicts_with("number_nonblank_lines"),
         )
         .arg(
             Arg::with_name("number_nonblank_lines")
                 .short("b")
+                .long("number-nonblank")
                 .help("Number non-empty lines.")
-                .takes_value(false),
+                .takes_value(false)
+                .conflicts_with("number_lines"),
         )
         .get_matches();
     
