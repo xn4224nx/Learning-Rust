@@ -13,6 +13,7 @@ pub struct Config {
     number_nonblank_lines: bool,
 }
 
+/// Main Program Function 
 pub fn run(config: Config) -> MyResult<()> {
     
     /* Iterate over the inputed filenames */
