@@ -12,8 +12,12 @@ pub struct Config {
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    println!("Hello, world!");
-    dbg!(config);
+    
+    /* Iterate over the inputed filenames */
+    for filename in config.files {
+        println!("{}", filename);
+    }
+    
     return Ok(())
 }
 
