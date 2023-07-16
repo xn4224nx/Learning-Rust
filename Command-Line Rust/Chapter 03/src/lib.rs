@@ -1,5 +1,7 @@
 use std::error::Error;
 use clap::{App, Arg};
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
 
@@ -20,6 +22,16 @@ pub fn run(config: Config) -> MyResult<()> {
     
     return Ok(())
 }
+
+/// Open a file as text or read STDIN
+pub fn open_file(filename: &str) -> MyResult<Box<dyn BufRead>> {
+
+    return match filename {
+        "-" => Ok(Box::new(BufReader::new(io::stdin()))),
+        _ => Ok(Box::new(BufReader::new(File::open(filename)?))),
+    }
+}
+
 
 /// Extract and Process the Arguments 
 pub fn get_args() -> MyResult<Config> {
