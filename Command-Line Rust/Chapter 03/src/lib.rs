@@ -16,9 +16,15 @@ pub struct Config {
 /// Main Program Function 
 pub fn run(config: Config) -> MyResult<()> {
     
-    /* Iterate over the inputed filenames */
+    /* Iterate over the inputed filenames. */
     for filename in config.files {
-        println!("{}", filename);
+        
+        /* Check that the file can be opened. */
+        match open_file(&filename) {
+            Err(err) => eprintln!("Failed to open {}: {}", filename, err),
+            Ok(_) => println!("Opened {}", filename),
+        
+        }
     }
     
     return Ok(())
