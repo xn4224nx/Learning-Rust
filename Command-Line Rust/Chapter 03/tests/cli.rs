@@ -10,7 +10,7 @@ const SPIDERS: &str = "tests/inputs/spiders.txt";
 const BUSTLE: &str = "tests/inputs/the-bustle.txt";
 
 
-fn  create_missing_filename() -> String {
+fn create_missing_filename() -> String {
     
     /* Loop until a bad file is found */
     loop {
@@ -28,3 +28,4 @@ fn  create_missing_filename() -> String {
         }
     }
 }
+
