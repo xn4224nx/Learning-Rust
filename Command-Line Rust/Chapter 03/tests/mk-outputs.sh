@@ -11,6 +11,7 @@ INDIR="./inputs"
 cat $INDIR/empty.txt > $OUTDIR/empty.txt
 cat $INDIR/fox.txt > $OUTDIR/fox.txt
 cat -n $INDIR/spiders.txt > $OUTDIR/spiders.txt
+cat $INDIR/the-bustle.txt > $OUTDIR/the-bustle.txt
 cat -n $INDIR/the-bustle.txt > $OUTDIR/n-the-bustle.txt
 cat -b $INDIR/the-bustle.txt > $OUTDIR/b-the-bustle.txt
 cd $INDIR
