@@ -36,7 +36,7 @@ fn create_missing_filename() -> String {
 }
 
 /// Run the program with an argument and verify the result
-fn verified_run(args: &[&str], expected_file &str) -> TestResult {
+fn verified_run(args: &[&str], expected_file: &str) -> TestResult {
     
     /* Read the expected result out of a file */
     let expected_result = fs::read_to_string(expected_file)?;
@@ -46,7 +46,7 @@ fn verified_run(args: &[&str], expected_file &str) -> TestResult {
         .args(args)
         .assert()
         .success()
-        .stdout(expected);
+        .stdout(expected_result);
    
    return Ok(())
 }
@@ -69,5 +69,10 @@ fn skip_bad_file() -> TestResult {
         .stderr(predicate::str::is_match(expected)?);
     
     return Ok(())
+}
+
+#[test]
+fn bustle() -> TestResult {
+    return verified_run(&[BUSTLE], "tests/outputs/the-bustle.txt") 
 }
 
