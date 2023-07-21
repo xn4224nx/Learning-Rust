@@ -15,8 +15,7 @@ const BUSTLE: &str = "tests/inputs/the-bustle.txt";
 /// The type returned by all tests
 type TestResult = Result<(), Box<dyn std::error::Error>>;
 
-
-
+/// Create a filename that doesn't exist
 fn create_missing_filename() -> String {
     
     /* Loop until a bad file is found */
@@ -35,6 +34,23 @@ fn create_missing_filename() -> String {
         }
     }
 }
+
+/// Run the program with an argument and verify the result
+fn verified_run(args: &[&str], expected_file &str) -> TestResult {
+    
+    /* Read the expected result out of a file */
+    let expected_result = fs::read_to_string(expected_file)?;
+    
+    /* Run the program and verify the result */
+    Command::cargo_bin(PRG)?
+        .args(args)
+        .assert()
+        .success()
+        .stdout(expected);
+   
+   return Ok(())
+}
+
 
 #[test]
 fn skip_bad_file() -> TestResult {
