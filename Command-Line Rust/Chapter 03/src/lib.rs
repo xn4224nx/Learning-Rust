@@ -22,8 +22,15 @@ pub fn run(config: Config) -> MyResult<()> {
         /* Check that the file can be opened. */
         match open_file(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
-            Ok(_) => println!("Opened {}", filename),
-        
+            Ok(file) => {
+                
+                /* Print the contents of the file */
+                for line_result in file.lines() {
+                    
+                    let line = line_result?;
+                    println!("{}", line);
+                }
+            },
         }
     }
     
