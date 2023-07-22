@@ -36,8 +36,8 @@ pub fn run(config: Config) -> MyResult<()> {
                     if config.number_lines {
                         println!("{:>6}\t{}", line_num + 1, line);
                     
-                    } else if config.nonblank_lines {
-                        if !line.empty() {
+                    } else if config.number_nonblank_lines {
+                        if !line.is_empty() {
                         
                             last_num += 1;
                             println!("{:>6}\t{}", last_num, line);
