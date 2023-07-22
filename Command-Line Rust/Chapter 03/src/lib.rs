@@ -24,11 +24,31 @@ pub fn run(config: Config) -> MyResult<()> {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
                 
+                let mut last_num = 0;
+                
                 /* Print the contents of the file */
-                for line_result in file.lines() {
+                for (line_num, line) in file.lines().enumerate() {
                     
-                    let line = line_result?;
-                    println!("{}", line);
+                    /* Extract the line. */
+                    let line = line?;
+                    
+                    /* Print the line */
+                    if config.number_lines {
+                        println!("{:>6}\t{}", line_num + 1, line);
+                    
+                    } else if config.nonblank_lines {
+                        if !line.empty() {
+                        
+                            last_num += 1;
+                            println!("{:>6}\t{}", last_num, line);
+                        
+                        } else {
+                            println!();
+                        }
+
+                    } else {
+                        println!("{}", line);
+                    }
                 }
             },
         }
