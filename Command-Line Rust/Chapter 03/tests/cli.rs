@@ -91,12 +91,12 @@ fn skip_bad_file() -> TestResult {
 
 #[test]
 fn ftest_all() -> TestResult {
-    return verified_run(&[BUSTLE], "tests/outputs/the-bustle.txt") 
+    return verified_run(&["-n", EMPTY, FOX, SPIDERS, BUSTLE], "tests/outputs/all.txt") 
 }
 
 #[test]
 fn ftest_b_the_bustle() -> TestResult {
-    return verified_run(&[BUSTLE], "tests/outputs/b-the-bustle.txt") 
+    return verified_run(&[BUSTLE, "-b"], "tests/outputs/b-the-bustle.txt") 
 }
 
 #[test]
@@ -111,12 +111,12 @@ fn ftest_fox() -> TestResult {
 
 #[test]
 fn ftest_n_the_bustle() -> TestResult {
-    return verified_run(&[BUSTLE], "tests/outputs/n-the-bustle.txt") 
+    return verified_run(&[BUSTLE, "-n"], "tests/outputs/n-the-bustle.txt") 
 }
 
 #[test]
 fn ftest_spiders() -> TestResult {
-    return verified_run(&[SPIDERS], "tests/outputs/spiders.txt") 
+    return verified_run(&[SPIDERS, "-b"], "tests/outputs/spiders.txt") 
 }
 
 #[test]
