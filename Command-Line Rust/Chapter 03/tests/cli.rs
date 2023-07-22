@@ -51,6 +51,24 @@ fn verified_run(args: &[&str], expected_file: &str) -> TestResult {
    return Ok(())
 }
 
+/// Run the command with an input file, expected file and arguments
+fn verified_run_stdin(input_file: &str, 
+    args: &[&str], expected_file: &str) -> TestResult {
+    
+    /* Read the expected and inputed result out of a file */
+    let expected_result = fs::read_to_string(expected_file)?;
+    let input = fs::read_to_string(input_file)?;
+    
+    /* Run the program and verify the result */
+    Command::cargo_bin(PRG)?
+        .args(args)
+        .write_stdin(input)
+        .assert()
+        .success()
+        .stdout(expected_result);
+   
+   return Ok(())
+}
 
 #[test]
 fn skip_bad_file() -> TestResult {
