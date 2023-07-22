@@ -72,7 +72,37 @@ fn skip_bad_file() -> TestResult {
 }
 
 #[test]
-fn bustle() -> TestResult {
+fn ftest_all() -> TestResult {
+    return verified_run(&[BUSTLE], "tests/outputs/the-bustle.txt") 
+}
+
+#[test]
+fn ftest_b_the_bustle() -> TestResult {
+    return verified_run(&[BUSTLE], "tests/outputs/b-the-bustle.txt") 
+}
+
+#[test]
+fn ftest_empty() -> TestResult {
+    return verified_run(&[EMPTY], "tests/outputs/empty.txt") 
+}
+
+#[test]
+fn ftest_fox() -> TestResult {
+    return verified_run(&[FOX], "tests/outputs/fox.txt") 
+}
+
+#[test]
+fn ftest_n_the_bustle() -> TestResult {
+    return verified_run(&[BUSTLE], "tests/outputs/n-the-bustle.txt") 
+}
+
+#[test]
+fn ftest_spiders() -> TestResult {
+    return verified_run(&[SPIDERS], "tests/outputs/spiders.txt") 
+}
+
+#[test]
+fn ftest_the_bustle() -> TestResult {
     return verified_run(&[BUSTLE], "tests/outputs/the-bustle.txt") 
 }
 
