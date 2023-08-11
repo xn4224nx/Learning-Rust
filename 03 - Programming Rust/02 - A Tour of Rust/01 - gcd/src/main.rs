@@ -33,7 +33,7 @@ fn main() {
     }
     
     /* Check that enough numbers have been provided. */
-    if nums.len() < 2 {
+    if nums.len() < 1 {
         eprintln!("Usage: gcd NUMBER NUMBER ...");
         std::process::exit(1);
     }
