@@ -1,4 +1,13 @@
 use actix_web::{web, App, HttpResponse, HttpServer};
+use serde::Deserialize;
+
+
+#[derive(Deserialize)]
+struct GcdParameters {
+    n: u64,
+    m: u64,
+}
+
 
 fn main() {
     
