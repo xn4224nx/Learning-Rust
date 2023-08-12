@@ -13,7 +13,9 @@ fn main() {
     
     /* Create a new server object. */
     let server = HttpServer::new(|| {
-        App::new().route("/", web::get().to(get_index))
+        App::new()
+            .route("/", web::get().to(get_index))
+            .route("/gcd", web::post().to(post_gcd))
     });
     
     println!("Serving on http://localhost:3000...");
@@ -64,5 +66,22 @@ fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     HttpResponse::Ok()
         .content_type("text/html")
         .body(response)
+}
+
+
+fn gcd(mut a: u64, mut b: u64) -> u64 {
+
+    /* Check the input variables */
+    assert!(a != 0 && b != 0);
+    
+    /* Until the remainder is zero. */
+    while b != 0 {
+        
+        let tmp = b;
+        b = a % b;
+        a = tmp;
+    }
+    
+    return a;
 }
 
