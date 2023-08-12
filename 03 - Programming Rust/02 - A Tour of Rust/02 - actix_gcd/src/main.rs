@@ -25,6 +25,7 @@ fn main() {
         .expect("Error running server.");
 }
 
+
 fn get_index() -> HttpResponse {
     
     HttpResponse::Ok()
@@ -38,8 +39,30 @@ fn get_index() -> HttpResponse {
                 <button type="submit">Compute GCD</button>
                 </form>
             "#,  
-        
         )
-
-
 }
+
+
+fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
+    
+    /* Check for invalid values */
+    if form.n == 0 || form.m == 0 {
+        return HttpResponse::BadRequest()
+            .content("text/html")
+            .body("Computing the GCD with zero is boring.")
+    }
+    
+    /* Create the response of the gcd calculation */
+    let response = 
+        format(
+            "The greatest common divisor of the numbers {} and {} \
+            is <b>{}<b>\n",
+            form.n, form.m, gcd(form.n, form.m)
+        );
+        
+    /* Send the response back */
+    HttpResponse::Ok()
+        .content_type("text/html")
+        .body(response)
+}
+
