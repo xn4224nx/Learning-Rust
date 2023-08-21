@@ -1,5 +1,11 @@
 use num::Complex;
 
+
+fn main() {
+    println!("{:?}", escape_time(Complex{re: 0.0, im: 0.0}, 20));
+}
+
+
 /// Determine if `c` is in the Mandelbrot set. 
 fn escape_time(c: Complex<f64>, limit: usize) -> Option<usize> {
    
@@ -14,9 +20,4 @@ fn escape_time(c: Complex<f64>, limit: usize) -> Option<usize> {
     
     /* If it can't be proved to be outside the set. */
     return None;
-}
-
-
-fn main() {
-    println!("{:?}", escape_time(Complex{re: 0.0, im: 0.0}, 20));
 }
