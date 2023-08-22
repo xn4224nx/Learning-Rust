@@ -37,3 +37,11 @@ pub fn parse_img_res<T: FromStr>(raw_res: &str, separator: char) -> Option<(T, T
         }
     };
 }
+
+/// Convert a string of containing two numbers to a complex float
+pub fn parse_complex_res(raw_res: &str) -> Option<Complex<f64>> {
+    return match parse_img_res(raw_res, ',') {
+        Some((re, im)) => Some(Complex { re, im }),
+        None => None,
+    };
+}
