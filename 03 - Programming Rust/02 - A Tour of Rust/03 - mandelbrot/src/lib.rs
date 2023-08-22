@@ -45,3 +45,26 @@ pub fn parse_complex_res(raw_res: &str) -> Option<Complex<f64>> {
         None => None,
     };
 }
+
+/// Given the row & column of a pixel return the point on the complex plane.
+///
+/// `image_size` - the width & height of the image.
+/// `pixel_coords` - the column & row of the pixel to be converted.
+/// `upper_left` - The upper left coordinate of the image cover.
+/// `lower_right` - The lower right coordinate of the image cover.
+pub fn pixel_point_to_complex(
+    image_size: (usize, usize),
+    pixel_coords: (usize, usize),
+    upper_left: Complex<f64>,
+    lower_right: Complex<f64>,
+) -> Complex<f64> {
+    let (width, height) = (
+        lower_right.re - upper_left.re,
+        upper_left.im - lower_right.im,
+    );
+
+    return Complex {
+        re: upper_left.re + pixel_coords.0 as f64 * width / image_size.0 as f64,
+        im: upper_left.im - pixel_coords.1 as f64 * height / image_size.1 as f64,
+    };
+}

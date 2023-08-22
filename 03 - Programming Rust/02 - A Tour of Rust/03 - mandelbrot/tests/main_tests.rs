@@ -23,3 +23,19 @@ fn test_parse_complex_res() {
     );
     assert_eq!(parse_complex_res("-0.0625"), None);
 }
+
+#[test]
+fn test_pixel_point_to_complex() {
+    assert_eq!(
+        pixel_point_to_complex(
+            (100, 200),
+            (25, 175),
+            Complex { re: -1.0, im: 1.0 },
+            Complex { re: 1.0, im: -1.0 }
+        ),
+        Complex {
+            re: -0.5,
+            im: -0.75
+        }
+    );
+}
