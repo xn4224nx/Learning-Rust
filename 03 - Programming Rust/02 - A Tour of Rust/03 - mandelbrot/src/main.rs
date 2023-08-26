@@ -1,3 +1,4 @@
+use mandelbrot::*;
 use std::env;
 
 fn main() {
@@ -15,9 +16,21 @@ fn main() {
     }
 
     /* Extract the image resolution, upper_left and lower_right. */
-    let bounds = parse_img_res(&args[2], 'x');
-    let upper_left = parse_complex_res(&args[3]);
-    let lower_right = parse_complex_res(&args[4]);
+    let bounds = match parse_img_res(&args[2], 'x') {
+        Some((width, height)) => (width, height),
+        None => panic!("Can't parse: {} with {}", &args[2], 'x')
+    };
+    
+    let upper_left = match parse_complex_res(&args[3]) {
+        Some(complex) => complex,
+        None => panic!("Can't parse: {}", &args[3])
+    };
+    
+    let lower_right= match parse_complex_res(&args[4]) {
+        Some(complex) => complex,
+        None => panic!("Can't parse: {}", &args[4])
+    };
+    
 
     /* Create the pixel array with all zeros. */
     let mut pixels = vec![0; bounds.0 * bounds.1];

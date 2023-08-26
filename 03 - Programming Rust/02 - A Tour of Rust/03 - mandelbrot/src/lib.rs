@@ -23,7 +23,7 @@ pub fn escape_time(c: Complex<f64>, limit: usize) -> Option<usize> {
 /// Parse the commandline arguments that define image resolution.
 pub fn parse_img_res<T: FromStr>(raw_res: &str, separator: char) -> Option<(T, T)> {
     /* Ensure the seperator exists in the res string. */
-    return match raw_res.find(separator) {
+    match raw_res.find(separator) {
         /* If it doesn't exist return None. */
         None => None,
 
@@ -35,10 +35,10 @@ pub fn parse_img_res<T: FromStr>(raw_res: &str, separator: char) -> Option<(T, T
                 T::from_str(&raw_res[index + 1..]),
             ) {
                 (Ok(l), Ok(r)) => Some((l, r)),
-                _ => None,
+                _ => None
             }
         }
-    };
+    }
 }
 
 /// Convert a string of containing two numbers to a complex float
@@ -74,10 +74,10 @@ pub fn pixel_point_to_complex(
 
 /// Render a rectangle of the Mandlebrot set into a buffer of pixels
 ///
-///     `bounds` - gives the width & height of the buffer `pixels`.
-///     `upper_left` - The upper left coordinate of pixel buffer.
-///     `lower_right` - The lower right coordinate of pixel buffer.
-fn render(
+/// `bounds` - gives the width & height of the buffer `pixels`.
+/// `upper_left` - The upper left coordinate of pixel buffer.
+/// `lower_right` - The lower right coordinate of pixel buffer.
+pub fn render(
     pixels: &mut [u8],
     bounds: (usize, usize),
     upper_left: Complex<f64>,
@@ -99,12 +99,12 @@ fn render(
 }
 
 /// Write `pixels` with dimensions given by `bounds` to a file called filename
-fn write_img(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Result<(), std::io::Error> {
+pub fn write_img(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Result<(), std::io::Error> {
     /* Create the output file. */
     let output = File::create(filename)?;
 
     let encoder = PNGEncoder::new(output);
-    encoder.encode(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::Gray(8));
+    let _ = encoder.encode(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::Gray(8));
 
     return Ok(());
 }
