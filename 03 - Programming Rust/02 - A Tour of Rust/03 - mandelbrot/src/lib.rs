@@ -68,3 +68,29 @@ pub fn pixel_point_to_complex(
         im: upper_left.im - pixel_coords.1 as f64 * height / image_size.1 as f64,
     };
 }
+
+/// Render a rectangle of the Mandlebrot set into a buffer of pixels
+///
+///     `bounds` - gives the width & height of the buffer `pixels`.
+///     `upper_left` - The upper left coordinate of pixel buffer.
+///     `lower_right` - The lower right coordinate of pixel buffer.
+fn render(
+    pixels: &mut [u8],
+    bounds: (usize, usize),
+    upper_left: Complex<f64>,
+    lower_right: Complex<f64>,
+) {
+    /* Check that there are enough pixels. */
+    assert!(pixels.len() == bounds.0 * bounds.1);
+
+    for row in 0..bounds.1 {
+        for col in 0..bounds.0 {
+            let point = pixel_point_to_complex(bounds, (col, row), upper_left, lower_right);
+
+            pixels[row * bounds.0 + col] = match escape_time(point, 255) {
+                None => 0,
+                Some(count) => 255 - count as u8,
+            };
+        }
+    }
+}
