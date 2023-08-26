@@ -1,4 +1,7 @@
+use image::png::PNGEncoder;
+use image::ColorType;
 use num::Complex;
+use std::fs::File;
 use std::str::FromStr;
 
 /// Determine if `c` is in the Mandelbrot set.
@@ -93,4 +96,15 @@ fn render(
             };
         }
     }
+}
+
+/// Write `pixels` with dimensions given by `bounds` to a file called filename
+fn write_img(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Result<(), std::io::Error> {
+    /* Create the output file. */
+    let output = File::create(filename)?;
+
+    let encoder = PNGEncoder::new(output);
+    encoder.encode(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::Gray(8));
+
+    return Ok(());
 }
