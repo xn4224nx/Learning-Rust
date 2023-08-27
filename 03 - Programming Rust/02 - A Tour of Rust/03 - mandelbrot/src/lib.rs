@@ -104,7 +104,7 @@ pub fn write_img(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Resul
     let output = File::create(filename)?;
 
     let encoder = PNGEncoder::new(output);
-    let _ = encoder.encode(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::Gray(8));
+    let _ = encoder.encode(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::L8);
 
     return Ok(());
 }
