@@ -1,4 +1,4 @@
-use image::png::PNGEncoder;
+use image::png::PngEncoder;
 use image::ColorType;
 use num::Complex;
 use std::fs::File;
@@ -103,7 +103,7 @@ pub fn write_img(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Resul
     /* Create the output file. */
     let output = File::create(filename)?;
 
-    let encoder = PNGEncoder::new(output);
+    let encoder = PngEncoder::new(output);
     let _ = encoder.encode(pixels, bounds.0 as u32, bounds.1 as u32, ColorType::L8);
 
     return Ok(());
