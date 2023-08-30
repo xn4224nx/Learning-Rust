@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::{env, fs};
 use text_colorizer::*;
 
@@ -42,6 +43,12 @@ fn parse_args() -> Arguments {
     };
 }
 
+fn replace(target: &str, replacement: &str, text: &str) -> Result<String, regex::Error> {
+    let regex = Regex::new(target)?;
+
+    return Ok(regex.replace_all(text, replacement).to_string());
+}
+
 fn main() {
     let args = parse_args();
     println!("{:?}", args);
@@ -60,8 +67,17 @@ fn main() {
         }
     };
 
+    /* Replace the `target` string with `replacement` */
+    let replaced_data = match replace(&args.target, &args.replacement, &data) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("{} failed to replace text: {:?}", "ERROR".red().bold(), e);
+            std::process::exit(1);
+        }
+    };
+
     /* Save the `data` string to the output file. */
-    match fs::write(&args.output, &data) {
+    match fs::write(&args.output, &replaced_data) {
         Ok(_) => {}
         Err(e) => {
             eprintln!(
