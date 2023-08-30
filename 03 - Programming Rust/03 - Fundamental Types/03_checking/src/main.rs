@@ -27,4 +27,16 @@ fn main() {
     /* For bit operations if the shift distance is greater than the value it is 
     shifted around, ie 17-bit shift goes to a 1-bit shift */
     assert_eq!(5_i16.wrapping_shl(17), 10);
+    
+    /* Saturating operations cap the value to the greatest possible value. */
+    assert_eq!(32760_i16.saturating_add(10), 32767);
+    assert_eq!((-32760_i16).saturating_sub(10), -32768);
+    
+    /* Overflowing operations return a tuple of the wrapped version and a bool 
+    to indicate if it overflowed. */
+    assert_eq!(255_u8.overflowing_sub(2), (253, false));
+    assert_eq!(255_u8.overflowing_add(2), (1, true));
+    
+    /* A shift of 17 bits is to large for `u16`, and 17 modulo 16 is 1. */
+    assert_eq!(5_u16.overflowing_shl(17), (10, true));
 }
