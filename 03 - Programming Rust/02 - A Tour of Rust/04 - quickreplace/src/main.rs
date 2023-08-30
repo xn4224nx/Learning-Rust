@@ -17,7 +17,7 @@ fn print_usage() {
     eprintln!("Usage: quickreplace <target> <replacement> <INPUT> <OUTPUT>");
 }
 
-fn parse_arguments() -> Arguments {
+fn parse_args() -> Arguments {
     /* Extract the arguments given to the program. */
     let args: Vec<String> = env::args().skip(1).collect();
 
