@@ -45,25 +45,31 @@ fn parse_args() -> Arguments {
 fn main() {
     let args = parse_args();
     println!("{:?}", args);
-    
+
     /* Read the input file as a string. */
     let data = match fs::read_to_string(&args.filename) {
-    
         Ok(v) => v,
         Err(e) => {
-            eprintln!("{} failed to read from file '{}': {:?}", 
-                "ERROR".red().bold(), args.filename, e);
+            eprintln!(
+                "{} failed to read from file '{}': {:?}",
+                "ERROR".red().bold(),
+                args.filename,
+                e
+            );
             std::process::exit(1);
         }
     };
-    
+
     /* Save the `data` string to the output file. */
     match fs::write(&args.output, &data) {
-        
-        Ok(_) => {},
+        Ok(_) => {}
         Err(e) => {
-            eprintln!("{} failed to write to file '{}': {:?}", 
-                "ERROR".red().bold(), args.output, e);
+            eprintln!(
+                "{} failed to write to file '{}': {:?}",
+                "ERROR".red().bold(),
+                args.output,
+                e
+            );
             std::process::exit(1);
         }
     };
