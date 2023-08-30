@@ -19,4 +19,11 @@ fn main() {
     assert_eq!(0b101101_u8.count_ones(), 4);
     assert_eq!(0b101101_u8.count_zeros(), 4);
     assert_eq!(0b101101_u8.leading_zeros(), 2);
+
+    /* Required specifications. */
+    println!("{}", (-4_i32).abs());
+    println!("{}", i32::abs(-4));
+
+    /* This won't work. */
+    //println!("{}", (-4).abs());
 }
