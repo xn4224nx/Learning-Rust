@@ -30,5 +30,20 @@ fn main() {
     let mut palindrome = vec!["madam", "I", "m", "addam",];
     palindrome.reverse();
     assert_eq!(palindrome, vec!["addam", "m", "I", "madam",]);
+    
+    /* Vectors with Capacity */
+    let mut v_cap: Vec<i32> = Vec::with_capacity(2);
+    assert_eq!(v_cap.len(), 0);
+    assert_eq!(v_cap.capacity(), 2);
+    
+    v_cap.push(1);
+    v_cap.push(2);
+    assert_eq!(v_cap.len(), 2);
+    assert_eq!(v_cap.capacity(), 2);
+    
+    v_cap.push(3);
+    assert_eq!(v_cap.len(), 3);
+    
+    println!("Capacity is now {}", v_cap.capacity());    
 }
 
