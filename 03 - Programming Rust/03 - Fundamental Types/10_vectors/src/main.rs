@@ -44,6 +44,21 @@ fn main() {
     v_cap.push(3);
     assert_eq!(v_cap.len(), 3);
     
-    println!("Capacity is now {}", v_cap.capacity());    
+    println!("Capacity is now {}.", v_cap.capacity());
+    
+    /* Inserting Elements */
+    let mut numbers = vec![10, 20, 30, 40, 50];
+    
+    numbers.insert(3, 35);
+    assert_eq!(numbers, [10, 20, 30, 35, 40, 50]);
+    
+    numbers.remove(1);
+    assert_eq!(numbers, [10, 30, 35, 40, 50]);
+    
+    /* Pop returns an Option<T> */
+    let mut words = vec!["Snow Puff", "Glass Gem"];
+    assert_eq!(words.pop(), Some("Glass Gem"));
+    assert_eq!(words.pop(), Some("Snow Puff")); 
+    assert_eq!(words.pop(), None);  
 }
 
