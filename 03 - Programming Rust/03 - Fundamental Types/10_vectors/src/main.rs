@@ -59,6 +59,13 @@ fn main() {
     let mut words = vec!["Snow Puff", "Glass Gem"];
     assert_eq!(words.pop(), Some("Glass Gem"));
     assert_eq!(words.pop(), Some("Snow Puff")); 
-    assert_eq!(words.pop(), None);  
+    assert_eq!(words.pop(), None);
+    
+    /* Iterate over a vector with a for loop. */
+    let prog_args: Vec<String> = std::env::args().skip(1).collect();
+    
+    for arg in prog_args {    
+        println!("{}", arg);
+    }
 }
 
