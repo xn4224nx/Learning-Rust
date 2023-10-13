@@ -32,7 +32,4 @@ fn main() {
             println!("{}", word)
         }
     }
-    
-    
-    
 }
