@@ -1,6 +1,18 @@
 fn main() {
     
-    print_padovan();    
+    print_padovan();
+    
+    
+    {
+        let point = Box::new((0.625, 0.5));     // point allocatedon the heap 
+                                                // here
+        let label = format!("{:?}", point);     // label allocated here
+        
+        assert_eq!(label, "(0.625, 0.5)");
+        
+        println!("\npoint = '{:?}'\nlabel = '{}'", point, label);
+        // Both label and point dropped here 
+    }    
 }
 
 fn print_padovan() {
