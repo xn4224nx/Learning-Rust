@@ -1,3 +1,5 @@
+struct Person {name: Option<String>, birth: i32}
+
 fn main() {
     
     /* Build a vector of number strings. */
@@ -29,5 +31,22 @@ fn main() {
     for mut n in nums {
         n.push('!');
         println!("{}", n);
-    } 
+    }
+    
+    /* Using structure. */
+    let mut composers = Vec::new();
+    composers.push(Person{
+            name: Some("Palestrina".to_string()),
+            birth: 1525
+        }
+    );
+    
+    /* Extract part of struct and replace it with "John Smith". */
+    let extract_name = std::mem::replace(
+        &mut composers[0].name, Some("John Smith".to_string()));
+    println!("Composer name is {:?}\n", extract_name.unwrap());
+    
+    /* Extract and replace the name with None */
+    println!("Composer name is {:?}\n", &composers[0].name.take().unwrap());
+    println!("Composer name is {:?}\n", &composers[0].name.take())
 }
