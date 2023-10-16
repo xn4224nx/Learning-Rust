@@ -1,3 +1,10 @@
+#[derive(Copy, Clone)]
+struct Label{number: u32}
+
+fn print(l: Label) {
+    println!("STAMP: {}", l.number);
+}
+
 fn main() {
     
     /* Strings are referenced */
@@ -11,4 +18,10 @@ fn main() {
     let num2 = num1;
     
     println!("{}\n{}\n", num1, num2);
+    
+    /* Borrowing or moving constructs. */
+    let lab = Label{number: 3};
+    print(lab);
+    
+    println!("My label number is: {}", lab.number);
 }
