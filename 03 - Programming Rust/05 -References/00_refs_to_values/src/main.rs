@@ -13,6 +13,12 @@ fn show_tbl(table: &Table) {
     }
 }
 
+fn sort_works(table: &mut Table) {
+    for (artist, works) in table {
+        works.sort();
+    }
+}
+
 fn main() {
     
     let mut authors = Table::new();
@@ -37,6 +43,10 @@ fn main() {
         "The Mirror and the Light".to_string(),
         "Beyond Black".to_string(),
     ]);
+    
+    show_tbl(&authors);
+    
+    sort_works(&mut authors);
     
     show_tbl(&authors);
 }
