@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 type Table = HashMap<String, Vec<String>>;
 
-fn show_tbl(table: Table) {
+fn show_tbl(table: &Table) {
 
     for (artist, works) in table {
     
@@ -38,5 +38,5 @@ fn main() {
         "Beyond Black".to_string(),
     ]);
     
-    show_tbl(authors);
+    show_tbl(&authors);
 }
