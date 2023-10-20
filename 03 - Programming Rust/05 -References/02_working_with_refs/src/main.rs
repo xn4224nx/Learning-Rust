@@ -1,3 +1,8 @@
+fn factorial(n: usize) -> usize {
+
+    return (1..=n).product();
+}
+
 struct Point {
     x: i32,
     y: i32,
@@ -43,4 +48,10 @@ fn main() {
     /* But they don't point to the same address. */
     assert!(!std::ptr::eq(rra, rrb));
     assert!(!std::ptr::eq(ra, rb));
+    
+    /* Borrowing references to Arbitary Expressions. */
+    let fr = &factorial(6);
+    
+    /* Arithmetic operators can see through one level of references. */
+    assert_eq!(fr + &1009, 1729);
 }
