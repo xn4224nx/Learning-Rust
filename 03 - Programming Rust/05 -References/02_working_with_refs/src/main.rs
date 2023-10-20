@@ -25,4 +25,22 @@ fn main() {
     
     /* The `.` operator dereferences as much as it needs. */
     assert_eq!(rrr.y, 729);
+    
+    /* Comparing References. */
+    let a = 10;
+    let b = 10;
+    
+    let ra = &a;
+    let rb = &b;
+    
+    let rra = &ra;
+    let rrb = &rb;
+    
+    /* The references point to the same value. */
+    assert!(rra == rrb);
+    assert!(ra == rb);
+    
+    /* But they don't point to the same address. */
+    assert!(!std::ptr::eq(rra, rrb));
+    assert!(!std::ptr::eq(ra, rb));
 }
