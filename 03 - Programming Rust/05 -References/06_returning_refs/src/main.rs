@@ -25,4 +25,5 @@ fn main() {
     }
     
     assert_eq!(*parab_min, 0);
+    println!("{}", *parab_min);
 }
