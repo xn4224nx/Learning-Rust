@@ -41,4 +41,18 @@ fn main() {
     for j in 0..=7 {
         println!("\tj = {}", j);
     }
+    
+    /* For loops consume the value unless refernced with & */
+    let errors = vec!["404", "File not find", "File access restricted"];
+    
+    println!("\nErrors:");
+    for err in &errors {
+        println!("\t{}", err);
+    }
+    
+    println!("\nNumber of errors: {}\n", errors.len())
+    
+    
+    
+    
 }
