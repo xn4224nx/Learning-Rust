@@ -42,11 +42,15 @@ fn main() {
     }
 
     /* For loops consume the value unless refernced with & */
-    let errors = vec!["404", "File not find", "File access restricted"];
+    let errors = vec!["404", "File not found", "File access restricted"];
 
     println!("\nErrors:");
     for err in &errors {
-        println!("\t{}", err);
+        println!(
+            "\tError: '{}', Error Adr: {:?}",
+            err,
+            std::ptr::addr_of!(err)
+        );
     }
 
     println!("\nNumber of errors: {}\n", errors.len())
