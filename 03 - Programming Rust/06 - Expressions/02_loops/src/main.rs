@@ -1,3 +1,6 @@
+use std::io;
+use std::io::BufRead;
+
 fn main() {
     let mut i: i32 = 0;
 
@@ -53,5 +56,28 @@ fn main() {
         );
     }
 
-    println!("\nNumber of errors: {}\n", errors.len())
+    println!("\nNumber of errors: {}\n", errors.len());
+
+    /* Control Flows in Loops */
+
+    let answer = loop {
+        /* Read from stdin into `buffer */
+        let mut buffer = String::new();
+        let stdin = io::stdin();
+        let mut handle = stdin.lock();
+        handle.read_line(&mut buffer);
+
+        /* Check if the string matches what we want */
+        if buffer.trim().to_lowercase().starts_with("answer:") {
+            /* Remove the start of the buffer. */
+            buffer = buffer.trim().replace("answer:", "");
+
+            /* Return buffer as the value for answer. */
+            break buffer;
+        } else {
+            println!("Give value that starts `answer:` you gave {}", buffer);
+        }
+    };
+
+    println!("The line you gave was: `{}`", answer);
 }
