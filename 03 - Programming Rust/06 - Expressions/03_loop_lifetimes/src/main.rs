@@ -11,4 +11,27 @@ fn main() {
             }
         }
     }
+
+    /* Find the square root of the first perfect square in the series. */
+    let mut n = 5;
+
+    let sqrt = 'outer: loop {
+        for i in 1.. {
+            let square = i * i;
+
+            if square == n {
+                /* A square root has been found. */
+                break 'outer n;
+            }
+
+            if square > n {
+                /* `n` is  not a perfect square. */
+                break;
+            }
+        }
+
+        n += 1;
+    };
+
+    println!("{} is a perfect square.", sqrt);
 }
