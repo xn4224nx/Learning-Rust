@@ -34,8 +34,10 @@ fn main() {
     /* Function call */
     println!("{:?}", Point::origin());
 
-    /* Method call on a structure */
-    println!("Manhattan Distance = {:.2}", mypoint.manhat_dist());
+    /* Chained method calls */
+    println!("Manhattan Distance = {:.2}", Point::origin().manhat_dist());
 
+    /* Method call on a structure */
     println!("{:?}", mypoint);
+    println!("Manhattan Distance = {:.2}", mypoint.manhat_dist());
 }
