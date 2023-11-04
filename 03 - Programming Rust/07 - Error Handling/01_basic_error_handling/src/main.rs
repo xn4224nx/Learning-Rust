@@ -26,4 +26,13 @@ fn main() {
         bot,
         calc.unwrap_or_else(|_error| { 0 })
     );
+
+    /* Access the Result as a reference. */
+    if calc.is_ok() {
+        let calc_pp = calc.as_ref().ok().unwrap() + 1;
+        println!("Calc++ = {}", calc_pp);
+    } else if calc.is_err() {
+        let error_text = calc.as_ref().err().unwrap();
+        println!("Error text is: '{}'", error_text);
+    }
 }
