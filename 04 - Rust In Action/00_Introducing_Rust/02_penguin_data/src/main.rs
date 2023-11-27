@@ -25,6 +25,8 @@ fn main() {
         /* Try and parse the numeric field and then print the row. */
         if let Ok(length) = fields[1].parse::<f32>() {
             println!("{}, {}cm", fields[0], length);
+        } else {
+            println!("Line {} is corrupted.", i)
         }
     }
 }
