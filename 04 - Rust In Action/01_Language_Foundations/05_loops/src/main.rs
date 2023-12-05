@@ -1,3 +1,5 @@
+use rand::random;
+
 fn main() {
     
     /* A Basic For loop */
@@ -27,5 +29,43 @@ fn main() {
     for i in 0..my_vec2.len() {
         let item = my_vec2[i];
         println!("my_vec2[{}] = {}", i, item);
+    }
+    
+    /* While Loop */
+    let mut samples = vec![];
+    
+    while samples.len() < 10 {
+        let sample = random::<u8>();
+        
+        if sample >= 100 {
+            continue;
+        }
+        
+        samples.push(sample);
+    }
+    println!("Samples = {:?}", samples);
+    
+    /* Endless Loops */
+    loop {
+    
+        let rnd_num = random::<u8>();
+        println!("rnd_num = {}", rnd_num);
+        
+        if rnd_num > 100 {
+            break;
+        }
+    }
+    
+    /* Escaping from nested loops. */
+    'outer: for x in 0.. {
+        for y in 0.. {
+            for z in 0.. {
+                println!("[{}, {}, {}]", x, y, z);
+                
+                if x + y + z > 100 {
+                    break 'outer;
+                }
+            }
+        }
     }
 }
