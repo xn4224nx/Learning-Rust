@@ -1,4 +1,4 @@
-fn add<T>(i: T, j: T) -> T {
+fn add<T: std::ops::Add<Output = T>>(i: T, j: T) -> T {
     return i + j;
 }
 
