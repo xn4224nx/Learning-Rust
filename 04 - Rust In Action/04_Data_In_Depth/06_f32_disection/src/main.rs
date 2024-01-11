@@ -7,6 +7,9 @@ fn main() {
 
     let (sign, exp, frac) = to_parts(n);
     let (sign_d, exp_d, frac_d) = decode(sign, exp, frac);
+    let n_recon = reconstitute_f32(sign_d, exp_d, frac_d);
+
+    println!("original = {}\n", n);
 
     println!("sign:     {:01b}", sign);
     println!("exponent: {:08b}", exp);
@@ -15,6 +18,8 @@ fn main() {
     println!("sign:     {}", sign_d);
     println!("exponent: {}", exp_d);
     println!("mantissa: {}\n", frac_d);
+
+    println!("reconstituted = {}\n", n_recon);
 }
 
 fn to_parts(n: f32) -> (u32, u32, u32) {
@@ -24,7 +29,7 @@ fn to_parts(n: f32) -> (u32, u32, u32) {
     let sign = (bits >> 31) & 1;
 
     /* Filter out the top bit with a logical AND mask then remove 23 bits. */
-    let exponent = (bits >> 23) & 0xf;
+    let exponent = (bits >> 23) & 0xff;
 
     /* Retain the 23 least significant bits via an AND mask. */
     let fraction = bits & 0x7fffff;
@@ -54,4 +59,8 @@ fn decode(sign: u32, exponent: u32, fraction: u32) -> (f32, f32, f32) {
     }
 
     return (signed_1, exponent, mantissa);
+}
+
+fn reconstitute_f32(sign: f32, exponent: f32, fraction: f32) -> f32 {
+    return sign * exponent * fraction;
 }
