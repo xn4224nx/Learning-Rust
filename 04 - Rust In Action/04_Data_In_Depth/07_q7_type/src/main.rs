@@ -14,9 +14,21 @@ impl From<f64> for Q7 {
     }
 }
 
+impl From<f32> for Q7 {
+    fn from(n: f32) -> Self {
+        return Q7::from(n as f64);
+    }
+}
+
 impl From<Q7> for f64 {
     fn from(n: Q7) -> f64 {
         return (n.0 as f64) * 2_f64.powf(-7.0);
+    }
+}
+
+impl From<Q7> for f32 {
+    fn from(n: Q7) -> f32 {
+        return f64::from(n) as f32;
     }
 }
 
