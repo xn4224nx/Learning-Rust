@@ -1,7 +1,7 @@
 use graphics::math::{Vec2d, add, mul_scalar};
 use piston_window::*;
 use rand::prelude::*;
-use std::alloc:{GlobalAlloc, System, Layout};
+use std::alloc::{GlobalAlloc, System, Layout};
 use std::time::Instant;
 
 #[global_allocator]
@@ -160,16 +160,16 @@ fn main() {
     .expect("Could not create a window!");
     
     let mut world = World::new(width, height);
-    world.add_shape(1000);
+    world.add_shapes(1000);
     
-    while let Some(event) = wiindow.next() {
+    while let Some(event) = window.next() {
         world.update();
         window.draw_2d(&event, |ctx, renderer, _device| {
             clear([0.15, 0.17, 0.17, 0.9], renderer);
             
             for s in &mut world.particles {
                 let size = [s.position[0], s.position[1], s.width, s.height];
-                rectangle(s.colour, size, stx.transform, renderer);
+                rectangle(s.colour, size, ctx.transform, renderer);
             }
         });
     }
