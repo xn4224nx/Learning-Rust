@@ -13,7 +13,6 @@ declare -a prog_inputs=(
 for i in "${prog_inputs[@]}"
 do
    cargo run -q $i
-   # or do whatever with individual element of the array
 done
 
 cargo clean -q
