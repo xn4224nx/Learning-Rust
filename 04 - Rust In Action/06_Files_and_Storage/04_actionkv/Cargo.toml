@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 byteorder = "1.5.0"
 crc = "3.2.1"
+serde_derive = "1.0.198"
 
 # There can only be one library per crate
 [lib]
