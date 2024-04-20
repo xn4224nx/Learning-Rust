@@ -5,16 +5,16 @@ use std::io::{self, BufReader, BufWriter, SeekFrom};
 use std::path::Path;
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
-use crc::crc32;
-use serde::{Deserialize, Serialize};
+use crc32fast;
+use serde_derive::{Serialize, Deserialize};
 
 type ByteString = Vec<u8>;
 type ByteStr = [u8];
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct KeyValuePair {
     pub key: ByteString,
-    pub key: ByteString,
+    pub value: ByteString,
 }
 
 #[derive(Debug)]
@@ -53,7 +53,7 @@ impl ActionKV {
 
         debug_assert_eq!(data.len(), data_len as usize);
 
-        let checksum = crc32::checksum_ieee(&data);
+        let checksum = crc32fast::hash(&data);
         if checksum != saved_checksum {
             panic!(
                 "data corruption encountered ({:08x} != {:08x})",
@@ -72,13 +72,13 @@ impl ActionKV {
     }
 
     pub fn load(&mut self) -> io::Result<()> {
-        let f = BufReader::new(&mut self.f);
+        let mut f = BufReader::new(&mut self.f);
 
         loop {
             let current_position = f.seek(SeekFrom::Current(0))?;
 
             let maybe_kv = ActionKV::process_record(&mut f);
-            let kv = match maybekv {
+            let kv = match maybe_kv {
                 Ok(kv) => kv,
                 Err(err) => match err.kind() {
                     io::ErrorKind::UnexpectedEof => {
@@ -121,7 +121,7 @@ impl ActionKV {
             let position = f.seek(SeekFrom::Current(0))?;
 
             let maybe_kv = ActionKV::process_record(&mut f);
-            let kv = match maybekv {
+            let kv = match maybe_kv {
                 Ok(kv) => kv,
                 Err(err) => match err.kind() {
                     io::ErrorKind::UnexpectedEof => {
@@ -144,7 +144,7 @@ impl ActionKV {
         return Ok(());
     }
 
-    pub fn insert_but_ignore_index(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<u64> {
+    pub fn insert_but_ignore_index(&mut self, key: &ByteStr, val: &ByteStr) -> io::Result<u64> {
         let mut f = BufWriter::new(&mut self.f);
 
         let key_len = key.len();
@@ -155,11 +155,11 @@ impl ActionKV {
             tmp.push(*byte);
         }
 
-        for byte in value {
+        for byte in val {
             tmp.push(*byte);
         }
 
-        let checksum = crc32::checksum_ieee(&tmp);
+        let checksum = crc32fast::hash(&tmp);
 
         let next_byte = SeekFrom::End(0);
         let current_position = f.seek(SeekFrom::Current(0))?;
