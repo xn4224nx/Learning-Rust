@@ -6,7 +6,7 @@ use std::path::Path;
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use crc32fast;
-use serde_derive::{Serialize, Deserialize};
+use serde_derive::{Deserialize, Serialize};
 
 type ByteString = Vec<u8>;
 type ByteStr = [u8];
