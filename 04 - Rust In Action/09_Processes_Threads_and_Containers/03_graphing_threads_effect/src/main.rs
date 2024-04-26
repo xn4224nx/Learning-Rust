@@ -14,7 +14,12 @@ fn main() {
         .parse::<usize>()
         .expect("The second argument must be an integer");
 
-    let method = &args[1];
+    /* Collect the type of simulation and check validity */
+    let method = &args[1].trim().to_lowercase().as_str();
+    let valid_methods = vec!["spin", "sleep"];
+    if !valid_methods.contains(&method) {
+        panic!("'{}' is an invalid method!", method);
+    }
 
     /* Run the thread allocation timing simulations. */
     for n in 1..=iterations {
@@ -23,10 +28,34 @@ fn main() {
 
         /* Construct the threads. */
         for _m in 0..n {
-            let handle = thread::spawn(|| {
-                let pause = time::Duration::from_millis(20);
-                thread::sleep(pause);
-            });
+            let start = time::Instant::now();
+
+            /* Create a thread that yields after the pause. */
+            if method == "spin" {
+                let handle = thread::spawn(|| {
+                    let start = time::Instant::now();
+                    let pause = time::Duration::from_millis(20);
+
+                    while start.elapsed() < pause {
+                        thread::yield_now()
+                    }
+                });
+
+            /* Create a thread that sleeps. */
+            } else if method == "sleep" {
+                let handle = thread::spawn(|| {
+                    let pause = time::Duration::from_millis(20);
+                    thread::sleep(pause);
+                });
+
+            /* Make Sure a valid thread is executed. */
+            } else {
+                panic!(
+                    "Method '{}' has reached an area it should not have.",
+                    method
+                );
+            }
+
             handlers.push(handle);
         }
 
