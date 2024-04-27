@@ -14,9 +14,9 @@ set yrange [10 to 400]
 set ytics nomirror out
 
 set terminal png size 4000,3000 enhanced font "default,20"
-set output 'output.png'
+set output 'output_spin.png'
 
-plot "alloc.tsv" with points \
+plot "spin.tsv" with points \
     pointtype 6 \
     pointsize 1.25 \
     linecolor rgbcolor "#22dd3131"

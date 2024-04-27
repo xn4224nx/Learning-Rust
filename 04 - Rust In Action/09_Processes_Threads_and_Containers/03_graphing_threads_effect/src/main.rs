@@ -15,7 +15,9 @@ fn main() {
         .expect("The second argument must be an integer");
 
     /* Collect the type of simulation and check validity */
-    let method = &args[1].trim().to_lowercase().as_str();
+    let raw_method = args[1].trim().to_lowercase();
+    let method = &raw_method.as_str();
+    
     let valid_methods = vec!["spin", "sleep"];
     if !valid_methods.contains(&method) {
         panic!("'{}' is an invalid method!", method);
@@ -31,7 +33,7 @@ fn main() {
             let start = time::Instant::now();
 
             /* Create a thread that yields after the pause. */
-            if method == "spin" {
+            if method == &valid_methods[1] {
                 let handle = thread::spawn(|| {
                     let start = time::Instant::now();
                     let pause = time::Duration::from_millis(20);
@@ -40,13 +42,15 @@ fn main() {
                         thread::yield_now()
                     }
                 });
+                handlers.push(handle);
 
             /* Create a thread that sleeps. */
-            } else if method == "sleep" {
+            } else if method == &valid_methods[0] {
                 let handle = thread::spawn(|| {
                     let pause = time::Duration::from_millis(20);
                     thread::sleep(pause);
                 });
+                handlers.push(handle);
 
             /* Make Sure a valid thread is executed. */
             } else {
@@ -54,9 +58,7 @@ fn main() {
                     "Method '{}' has reached an area it should not have.",
                     method
                 );
-            }
-
-            handlers.push(handle);
+            }  
         }
 
         /* Unwind the threads. */
