@@ -17,11 +17,13 @@ fn main() {
     /* Collect the type of simulation and check validity */
     let raw_method = args[1].trim().to_lowercase();
     let method = &raw_method.as_str();
-    
+
     let valid_methods = vec!["spin", "sleep"];
     if !valid_methods.contains(&method) {
         panic!("'{}' is an invalid method!", method);
     }
+
+    let pause = time::Duration::from_millis(20);
 
     /* Run the thread allocation timing simulations. */
     for n in 1..=iterations {
@@ -30,15 +32,11 @@ fn main() {
 
         /* Construct the threads. */
         for _m in 0..n {
-            let start = time::Instant::now();
-
             /* Create a thread that yields after the pause. */
             if method == &valid_methods[1] {
-                let handle = thread::spawn(|| {
-                    let start = time::Instant::now();
-                    let pause = time::Duration::from_millis(20);
-
-                    while start.elapsed() < pause {
+                let handle = thread::spawn(move || {
+                    let start_thread = time::Instant::now();
+                    while start_thread.elapsed() < pause {
                         thread::yield_now()
                     }
                 });
@@ -46,8 +44,7 @@ fn main() {
 
             /* Create a thread that sleeps. */
             } else if method == &valid_methods[0] {
-                let handle = thread::spawn(|| {
-                    let pause = time::Duration::from_millis(20);
+                let handle = thread::spawn(move || {
                     thread::sleep(pause);
                 });
                 handlers.push(handle);
@@ -58,7 +55,7 @@ fn main() {
                     "Method '{}' has reached an area it should not have.",
                     method
                 );
-            }  
+            }
         }
 
         /* Unwind the threads. */
