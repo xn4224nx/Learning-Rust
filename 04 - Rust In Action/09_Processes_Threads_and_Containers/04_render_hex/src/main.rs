@@ -4,6 +4,8 @@ use svg::node::element::path::{Command, Data, Position};
 use svg::node::element::{Path, Rectangle};
 use svg::Document;
 
+use rayon::prelude::*;
+
 use crate::Operation::{Forward, Home, Noop, TurnLeft, TurnRight};
 
 use crate::Orientation::{East, North, South, West};
@@ -104,8 +106,10 @@ impl Artist {
 }
 
 fn parse(input: &str) -> Vec<Operation> {
-    return input.bytes().map(|byte| {
-        match byte {
+    return input
+        .as_bytes()
+        .par_iter()
+        .map(|byte| match byte {
             b'0' => Home,
             b'1'..=b'9' => {
                 let distance = (byte - 0x30) as isize;
@@ -113,8 +117,9 @@ fn parse(input: &str) -> Vec<Operation> {
             }
             b'a' | b'b' | b'c' => TurnLeft,
             b'd' | b'e' | b'f' => TurnRight,
-            _ => Noop(byte),
-    }}).collect();
+            _ => Noop(*byte),
+        })
+        .collect();
 }
 
 fn convert(operations: &Vec<Operation>) -> Vec<Command> {
@@ -132,7 +137,7 @@ fn convert(operations: &Vec<Operation>) -> Vec<Command> {
             Home => turtle.home(),
             Noop(byte) => {
                 eprintln!("Warning: illegal byte: {:?}", byte);
-            },
+            }
         };
 
         let path_segment = Command::Line(Position::Absolute, (turtle.x, turtle.y).into());
