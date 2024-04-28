@@ -111,7 +111,7 @@ fn parse(input: &str) -> Vec<Operation> {
             b'0' => Home,
             b'1'..=b'9' => {
                 let distance = (byte - 0x30) as isize;
-                return Forward(distance * (HEIGHT / 10));
+                Forward(distance * (HEIGHT / 10))
             }
             b'a' | b'b' | b'c' => TurnLeft,
             b'd' | b'e' | b'f' => TurnRight,
@@ -122,7 +122,7 @@ fn parse(input: &str) -> Vec<Operation> {
     return steps;
 }
 
-fn convert(operations: &Vec<Operation>) {
+fn convert(operations: &Vec<Operation>) -> Vec<Command> {
     let mut turtle = Artist::new();
     let mut path_data = Vec::<Command>::with_capacity(operations.len());
     let start_at_home = Command::Move(Position::Absolute, (HOME_X, HOME_Y).into());
@@ -137,7 +137,7 @@ fn convert(operations: &Vec<Operation>) {
             Home => turtle.home(),
             Noop(byte) => {
                 eprintln!("Warning: illegal byte: {:?}", byte);
-            }
+            },
         };
 
         let path_segment = Command::Line(Position::Absolute, (turtle.x, turtle.y).into());
@@ -168,7 +168,7 @@ fn generate_svg(path_data: Vec<Command>) -> Document {
         .set("stroke", "#2f2f2f")
         .set("stroke-width", STROKE_WIDTH)
         .set("stroke-opacity", "0.9")
-        .set("d", Date::from(path_data));
+        .set("d", Data::from(path_data));
 
     let document = Document::new()
         .set("viewBox", (0, 0, HEIGHT, WIDTH))
@@ -183,7 +183,7 @@ fn generate_svg(path_data: Vec<Command>) -> Document {
 }
 
 fn main() {
-    let args = env::arg().collect::<Vec<String>>();
+    let args = env::args().collect::<Vec<String>>();
     let input = args.get(1).unwrap();
     let default_filename = format!("{}.svg", input);
     let save_to = args.get(2).unwrap_or(&default_filename);
