@@ -104,10 +104,8 @@ impl Artist {
 }
 
 fn parse(input: &str) -> Vec<Operation> {
-    let mut steps = Vec::<Operation>::new();
-
-    for byte in input.bytes() {
-        let step = match byte {
+    return input.bytes().map(|byte| {
+        match byte {
             b'0' => Home,
             b'1'..=b'9' => {
                 let distance = (byte - 0x30) as isize;
@@ -116,10 +114,7 @@ fn parse(input: &str) -> Vec<Operation> {
             b'a' | b'b' | b'c' => TurnLeft,
             b'd' | b'e' | b'f' => TurnRight,
             _ => Noop(byte),
-        };
-        steps.push(step);
-    }
-    return steps;
+    }}).collect();
 }
 
 fn convert(operations: &Vec<Operation>) -> Vec<Command> {
