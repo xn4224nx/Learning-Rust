@@ -1,0 +1,10 @@
+[package]
+name = "fledge_0"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bootimage = "0.10.3"
+cargo-binutils = "0.3.6"
