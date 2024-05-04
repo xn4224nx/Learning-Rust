@@ -8,3 +8,5 @@ if ! [ $ret_code -eq 0 ]; then
     echo "QEMU Not installed" 1>&2
     sudo apt install qemu-system
 fi
+
+cargo +nightly run
