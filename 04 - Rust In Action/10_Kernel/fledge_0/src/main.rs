@@ -4,7 +4,7 @@
 
 /* Unlock the LLVM compiler's intrinsic functions. */
 #![feature(core_intrinsics)]
-use core::instrinsics;
+use core::intrinsics;
 
 /* Allow the panic handler to inspect where the error occured. */
 use core::panic::PanicInfo;

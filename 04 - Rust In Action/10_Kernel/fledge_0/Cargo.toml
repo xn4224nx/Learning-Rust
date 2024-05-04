@@ -6,13 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bootimage = "0.10.3"
-bootloader = "0.11.7"
-cargo-binutils = "0.3.6"
-x86_64 = "0.15.1"
+bootloader = "0.9.22"
+x86_64 = "0.14.10"
 
 [package.metadata.bootimage]
 build-command =["build"]
 run-command = [
-    "quemu-system-x86_64", "-drive", "format=raw,file={}"
+    "qemu-system-x86_64", "-drive", "format=raw,file={}"
 ]
