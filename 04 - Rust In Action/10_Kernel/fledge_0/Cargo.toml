@@ -7,4 +7,12 @@ edition = "2021"
 
 [dependencies]
 bootimage = "0.10.3"
+bootloader = "0.11.7"
 cargo-binutils = "0.3.6"
+x86_64 = "0.15.1"
+
+[package.metadata.bootimage]
+build-command =["build"]
+run-command = [
+    "quemu-system-x86_64", "-drive", "format=raw,file={}"
+]
