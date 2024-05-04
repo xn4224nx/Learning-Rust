@@ -5,6 +5,7 @@
 /* Unlock the LLVM compiler's intrinsic functions. */
 #![feature(core_intrinsics)]
 
+use core::fmt::{self, Write};
 use core::intrinsics;
 /* Allow the panic handler to inspect where the error occured. */
 use core::panic::PanicInfo;
@@ -59,11 +60,32 @@ impl Cursor {
     }
 }
 
+impl fmt::Write for Cursor {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        self.print(s.as_bytes());
+        return Ok(());
+    }
+}
+
 #[panic_handler]
 #[no_mangle]
-pub fn panic(_info: &PanicInfo) -> ! {
-    unsafe {
-        intrinsics::abort();
+pub fn panic(info: &PanicInfo) -> ! {
+    let mut cur = Cursor {
+        position: 0,
+        foreground: Colour::White,
+        background: Colour::Red,
+    };
+
+    for _ in 0..(80 * 25) {
+        cur.print(b" ");
+    }
+    cur.position = 0;
+    write!(cur, "{}", info).unwrap();
+
+    loop {
+        unsafe {
+            hlt();
+        }
     }
 }
 
@@ -81,6 +103,8 @@ pub extern "C" fn _start() -> ! {
         background: Colour::Yellow,
     };
     cur.print(text);
+
+    panic!("help!");
 
     loop {
         hlt();
