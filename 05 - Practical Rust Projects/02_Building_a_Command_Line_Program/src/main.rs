@@ -44,6 +44,14 @@ fn main() {
         msg_split[idx / MAX_MSG_LINE_CHAR].push(ms_char);
     }
 
+    /* Priests should not be saying bad things! */
+    if vec!["drink", "feck", "arse", "girls"]
+        .iter()
+        .any(|x| msg.contains(*x))
+    {
+        eprintln!("Father Jack is that you?!")
+    }
+
     println!(
         r#"
                __
