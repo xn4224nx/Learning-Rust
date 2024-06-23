@@ -12,17 +12,22 @@
 const MAX_MSG_LINE_CHAR: usize = 50;
 const NUM_MSG_LINES: usize = 5;
 
-use std::env::args;
+use clap::Parser;
+
+#[derive(Parser)]
+struct Options {
+    #[clap(default_value = "That would be an ecumenical matter!")]
+    message: String,
+}
 
 fn main() {
-    let message = args()
-        .nth(1)
-        .unwrap_or(String::from("That would be an ecumenical matter!"));
-
-    let mut msg_split: Vec<String> = vec![String::new(); NUM_MSG_LINES];
+    let options = Options::parse();
+    let msg = options.message;
 
     /* Split the message into MAX_MESSAGE_LINE sized chunks. */
-    for (idx, ms_char) in message.chars().enumerate() {
+    let mut msg_split: Vec<String> = vec![String::new(); NUM_MSG_LINES];
+
+    for (idx, ms_char) in msg.chars().enumerate() {
         /* Don't print charcters beyond the limit of the program */
         if idx >= MAX_MSG_LINE_CHAR * NUM_MSG_LINES {
             break;
