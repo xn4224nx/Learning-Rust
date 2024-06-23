@@ -14,9 +14,11 @@ The resources used in learning are as follows:
 
 4.  [Rust in Action](https://github.com/rust-in-action) - Introduces the Rust programming language by exploring numerous systems programming concepts and techniques.
 
+5.  [Practical Rust Projects](https://github.com/Apress/Practical-Rust-Projects-2nd-ed.) - Go beyond the basics and build complete applications using the Rust programming language, updated for Rust 2021 edition. The applications you'll build over the course of this book include a high-performance web client, an embedded computer (for a robot, for example), a game, a serverless web app, and an application that incorporates AI and machine learning.
+
 ## Future Resources
 
-Some viable books to use in future learing
+Some viable books to use in future learning:
 
 1.  [Hands-on Rust: Effective Learning through 2D Game Development and Play](https://github.com/thebracket/HandsOnRust) - Each chapter in this book presents hands-on, practical projects ranging from “Hello, World” to building a full dungeon crawler game.
 
@@ -28,6 +30,4 @@ Some viable books to use in future learing
 
 5. [The Algorithm Design Manual](https://www.algorist.com/) - The reader-friendly The Algorithm Design Manual provides straightforward access to combinatorial algorithms technology, stressing design over analysis. The first part, Techniques, provides accessible instruction on methods for designing and analyzing computer algorithms. The second part, Resources, is intended for browsing and reference, and comprises the catalog of algorithmic resources, implementations and an extensive bibliography. 
 
-6. [Practical Rust Projects](https://github.com/Apress/Practical-Rust-Projects-2nd-ed.) - Go beyond the basics and build complete applications using the Rust programming language, updated for Rust 2021 edition. The applications you'll build over the course of this book include a high-performance web client, an embedded computer (for a robot, for example), a game, a serverless web app, and an application that incorporates AI and machine learning.  
-  
-8. [Rust Atomics and Locks](https://github.com/m-ou-se/rust-atomics-and-locks) - In this practical book, Mara Bos, team lead of the Rust library team, helps Rust programmers of all levels gain a clear understanding of low-level concurrency. You’ll learn everything about atomics and memory ordering and how they're combined with basic operating system APIs to build common primitives like mutexes and condition variables. Once you’re done, you’ll have a firm grasp of how Rust’s memory model, the processor, and the role of the operating system all fit together.
+6. [Rust Atomics and Locks](https://github.com/m-ou-se/rust-atomics-and-locks) - In this practical book, Mara Bos, team lead of the Rust library team, helps Rust programmers of all levels gain a clear understanding of low-level concurrency. You’ll learn everything about atomics and memory ordering and how they're combined with basic operating system APIs to build common primitives like mutexes and condition variables. Once you’re done, you’ll have a firm grasp of how Rust’s memory model, the processor, and the role of the operating system all fit together.
