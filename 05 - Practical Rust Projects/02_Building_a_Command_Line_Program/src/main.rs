@@ -13,6 +13,7 @@ const MAX_MSG_LINE_CHAR: usize = 50;
 const NUM_MSG_LINES: usize = 5;
 
 use clap::Parser;
+use colored::Colorize;
 
 #[derive(Parser)]
 struct Options {
@@ -23,6 +24,10 @@ struct Options {
     #[clap(short = 'e', long = "eyes")]
     /// Give the preacher happy eyes.
     happy: bool,
+
+    #[clap(short = 'c', long = "colors")]
+    /// Give the message bright colors.
+    colors: bool,
 }
 
 fn main() {
@@ -44,12 +49,15 @@ fn main() {
         msg_split[idx / MAX_MSG_LINE_CHAR].push(ms_char);
     }
 
-    /* Priests should not be saying bad things! */
-    if vec!["drink", "feck", "arse", "girls"]
-        .iter()
-        .any(|x| msg.contains(*x))
-    {
-        eprintln!("Father Jack is that you?!")
+    /* Change the messages to bright colours */
+    let mut col_msg = Vec::new();
+
+    for msg_ln in msg_split {
+        if options.colors {
+            col_msg.push(msg_ln.bright_yellow().on_bright_purple());
+        } else {
+            col_msg.push(msg_ln.into());
+        }
     }
 
     println!(
@@ -71,6 +79,14 @@ fn main() {
      |  |  | /|
      '''''''' |
     "#,
-        msg_split[0], msg_split[1], msg_split[2], msg_split[3], msg_split[4]
+        col_msg[0], col_msg[1], col_msg[2], col_msg[3], col_msg[4]
     );
+
+    /* Priests should not be saying bad things! */
+    if vec!["drink", "feck", "arse", "girls"]
+        .iter()
+        .any(|x| msg.contains(*x))
+    {
+        eprintln!("Father Jack is that you?!")
+    }
 }
