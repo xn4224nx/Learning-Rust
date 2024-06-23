@@ -17,12 +17,20 @@ use clap::Parser;
 #[derive(Parser)]
 struct Options {
     #[clap(default_value = "That would be an ecumenical matter!")]
+    /// What is the liturgical message you wish to spread?
     message: String,
+
+    #[clap(short = 'e', long = "eyes")]
+    /// Give the preacher happy eyes.
+    happy: bool,
 }
 
 fn main() {
     let options = Options::parse();
     let msg = options.message;
+
+    /* Determine what the vicars eyes will be */
+    let eye = if options.happy { '^' } else { 'o' };
 
     /* Split the message into MAX_MESSAGE_LINE sized chunks. */
     let mut msg_split: Vec<String> = vec![String::new(); NUM_MSG_LINES];
@@ -43,7 +51,7 @@ fn main() {
         /  \  |  /
        |    | |        {}                                       
        \____/ |       /{}   
-       ( o o) |      / {}
+       ( {eye} {eye}) |      / {}
        /\__/\ |   __/  {}
       /\ qp /\|        {}
      /  |  |  |
