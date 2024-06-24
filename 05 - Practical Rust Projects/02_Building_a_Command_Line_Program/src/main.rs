@@ -85,7 +85,7 @@ fn main() {
     /* Priests should not be saying bad things! */
     if vec!["drink", "feck", "arse", "girls"]
         .iter()
-        .any(|x| msg.contains(*x))
+        .any(|x| msg.to_lowercase().contains(*x))
     {
         eprintln!("Father Jack is that you?!")
     }
