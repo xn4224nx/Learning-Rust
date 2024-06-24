@@ -62,3 +62,43 @@ fn run_with_very_long_input() {
         .success()
         .stdout(predicate::str::contains("a"));
 }
+
+#[test]
+fn run_with_bad_txt_0() {
+    Command::cargo_bin("robo_preacher")
+        .expect("binary exists")
+        .args(&["DRINK"])
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("Father Jack is that you?!"));
+}
+
+#[test]
+fn run_with_bad_txt_1() {
+    Command::cargo_bin("robo_preacher")
+        .expect("binary exists")
+        .args(&["FECK"])
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("Father Jack is that you?!"));
+}
+
+#[test]
+fn run_with_bad_txt_2() {
+    Command::cargo_bin("robo_preacher")
+        .expect("binary exists")
+        .args(&["ARSE"])
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("Father Jack is that you?!"));
+}
+
+#[test]
+fn run_with_bad_txt_4() {
+    Command::cargo_bin("robo_preacher")
+        .expect("binary exists")
+        .args(&["GIRLS"])
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("Father Jack is that you?!"));
+}
