@@ -70,7 +70,7 @@ fn dies_bytes_and_lines() -> TestResult {
                used with '--bytes <BYTES>'";
 
     Command::cargo_bin(PRG)?
-        .args(&["-n", "1", "-c", "2"])
+        .args(&["file", "-n", "1", "-c", "2"])
         .assert()
         .failure()
         .stderr(predicate::str::contains(msg));
