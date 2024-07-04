@@ -34,6 +34,11 @@ struct Options {
 fn main() {
     let options = Options::parse();
 
+    /* Confirm that both read options have not been selected. */
+    if options.nbytes.is_some() && options.nlines.is_some() {
+        panic!("The argument '--lines <LINES>' cannot be used with '--bytes <BYTES>'")
+    }
+
     /* Verify the file exists. */
     if !options.file.is_file() {
         let err_file = options.file.to_str().unwrap_or("Unparsable File");
