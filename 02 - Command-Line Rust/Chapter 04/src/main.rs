@@ -7,10 +7,10 @@
 
 use clap::Parser;
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use std::io::{prelude::*, BufReader, SeekFrom};
 use std::path::PathBuf;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 enum ReadType {
     Bytes,
     Lines,
@@ -57,20 +57,31 @@ fn main() {
         read_type = ReadType::Bytes;
     }
 
-    /* Open the file */
-    let fp = File::open(options.file).unwrap();
-    let reader = BufReader::new(fp);
+    if read_type == ReadType::Lines {
+        /* Open the file */
+        let fp = File::open(options.file).unwrap();
+        let reader = BufReader::new(fp);
 
-    /* Print the specified part of the file. */
-    for (idx, raw_line) in reader.lines().enumerate() {
-        if idx >= read_len {
-            break;
+        /* Print the specified part of the file. */
+        for (idx, raw_line) in reader.lines().enumerate() {
+            if idx >= read_len {
+                break;
+            }
+
+            let Ok(parsed_line) = raw_line else {
+                continue;
+            };
+
+            println!("{}", parsed_line);
         }
+    } else if read_type == ReadType::Bytes {
+        let mut fp = File::open(options.file).unwrap();
 
-        let Ok(parsed_line) = raw_line else {
-            continue;
-        };
+        /* Read bytes from the start of the file. */
+        fp.seek(SeekFrom::Start(0)).unwrap();
+        let mut buffer = vec![0; read_len];
+        fp.read_exact(&mut buffer).unwrap();
 
-        println!("{}", parsed_line);
+        println!("{:?}", buffer);
     }
 }
