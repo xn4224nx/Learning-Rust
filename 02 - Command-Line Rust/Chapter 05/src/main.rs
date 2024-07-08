@@ -7,7 +7,7 @@
 
 use clap::Parser;
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use std::io::{self, prelude::*, BufReader};
 use std::path::PathBuf;
 
 #[derive(Parser)]
@@ -45,6 +45,38 @@ struct Args {
     max_line_len: bool,
 }
 
+/// Count the words, bytes and chars in a string.
+fn count_within_a_string(input: String) -> (usize, usize, usize) {
+    let mut wrd_cnt = 0;
+    let mut char_cnt = 0;
+    let mut in_whitespace = true;
+
+    /* Iterate over the chars in the string. */
+    for str_char in input.chars() {
+        /* Check for white space, indicating the end of a word. */
+        if !in_whitespace && str_char.is_whitespace() {
+            wrd_cnt += 1;
+            in_whitespace = true;
+
+        /* Wait until non-white space (ie the next word) resumes. */
+        } else if !str_char.is_whitespace() {
+            in_whitespace = false;
+        }
+
+        char_cnt += 1;
+    }
+
+    return (wrd_cnt, input.len(), char_cnt);
+}
+
 fn main() {
     let args = Args::parse();
+
+    /* If no files have been provided read from STDIN. */
+    let mut stdin_input = String::new();
+    io::stdin()
+        .read_line(&mut stdin_input)
+        .expect("Error reading STDIN.");
+
+    println!("{:?}", count_within_a_string(stdin_input));
 }
