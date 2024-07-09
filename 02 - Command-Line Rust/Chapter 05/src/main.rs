@@ -6,9 +6,11 @@
  */
 
 use clap::Parser;
-use std::fs::File;
-use std::io::{self, prelude::*, BufReader};
-use std::path::PathBuf;
+use std::{
+    fs::File,
+    io::{self, prelude::*, BufReader},
+    path::PathBuf,
+};
 
 #[derive(Parser)]
 #[command(
@@ -22,7 +24,7 @@ ter will not be included in the line count."
 )]
 struct Args {
     /// The files to read analyse, will use STDIN if not specified.
-    files: Option<Vec<String>>,
+    files: Option<Vec<PathBuf>>,
 
     #[clap(short = 'c', long = "bytes")]
     /// Count the number of bytes in each input file.
@@ -73,10 +75,37 @@ fn main() {
     let args = Args::parse();
 
     /* If no files have been provided read from STDIN. */
-    let mut stdin_input = String::new();
-    io::stdin()
-        .read_line(&mut stdin_input)
-        .expect("Error reading STDIN.");
+    if args.files.is_none() {
+        let mut stdin_input = String::new();
+        io::stdin()
+            .read_line(&mut stdin_input)
+            .expect("Error reading STDIN.");
 
-    println!("{:?}", count_within_a_string(stdin_input));
+    /* Otherwise Iterate over every file and calculate its statistics. */
+    } else {
+        for raw_filepath in args.files.unwrap() {
+            /* Verify that the file exists. */
+            if !raw_filepath.is_file() {
+                let err_filename = raw_filepath.to_str().unwrap_or("Unparsable Filename");
+                println!("File Access Error - '{}'", err_filename);
+                continue;
+            };
+
+            /* Try and open the file. */
+            let Ok(fp) = File::open(&raw_filepath) else {
+                let err_filename = raw_filepath.to_str().unwrap_or("Unparsable Filename");
+                println!("File Read Error - '{}'", err_filename);
+                continue;
+            };
+
+            /* Read the file line by line. */
+            let file = BufReader::new(fp);
+            for raw_line in file.lines() {
+                let Ok(line) = raw_line else {
+                    continue;
+                };
+                println!("{}", line);
+            }
+        }
+    }
 }
