@@ -68,22 +68,62 @@ fn count_within_a_string(input: String) -> (usize, usize, usize) {
         char_cnt += 1;
     }
 
-    return (wrd_cnt, input.len(), char_cnt);
+    return (wrd_cnt, char_cnt, input.len());
 }
 
-fn main() {
-    let args = Args::parse();
+/// Output a files statistics
+fn output_stats(filename: String, args: &Args, wrd_total: usize, line_total: usize, char_total: usize, byte_total: usize, longest_line: usize) {
+    
+    /* Print file statistics. */
+    if args.bytes {
+        print!("\t{}", byte_total);
+    }
+    
+    if args.lines {
+        print!("\t{}", line_total);        
+    }
+    
+    if args.chars {
+        print!("\t{}", char_total);    
+    }
+    
+    if args.words {
+        print!("\t{}", wrd_total);    
+    }
+    
+    if args.max_line_len {
+        print!("\t{}", longest_line);    
+    }    
+    
+    /* Print the filename. */
+    println!("{}", filename);
+}
 
+
+
+fn main() {
+    let mut args = Args::parse();
+    
+    /* If no options have been selected set the output to lines, words, bytes. */
+    if !args.bytes && !args.lines && !args.chars && !args.words && !args.max_line_len {
+        args.lines = true;
+        args.words = true;
+        args.bytes = true;
+    }
+    
     /* If no files have been provided read from STDIN. */
     if args.files.is_none() {
         let mut stdin_input = String::new();
         io::stdin()
             .read_line(&mut stdin_input)
             .expect("Error reading STDIN.");
-
+        
+        let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(stdin_input);
+        output_stats(String::from(""), &args, wrd_cnt, 1, cha_cnt, byt_cnt, cha_cnt);
+    
     /* Otherwise Iterate over every file and calculate its statistics. */
     } else {
-        for raw_filepath in args.files.unwrap() {
+        for raw_filepath in args.files.as_ref().unwrap() {
             /* Verify that the file exists. */
             if !raw_filepath.is_file() {
                 let err_filename = raw_filepath.to_str().unwrap_or("Unparsable Filename");
@@ -98,14 +138,36 @@ fn main() {
                 continue;
             };
 
+            let mut wrd_total = 0;
+            let mut lines = 0;
+            let mut cha_total = 0;
+            let mut byt_total = 0;
+            let mut longest_line = 0;
+            
             /* Read the file line by line. */
             let file = BufReader::new(fp);
             for raw_line in file.lines() {
                 let Ok(line) = raw_line else {
                     continue;
                 };
-                println!("{}", line);
+                
+                /*  Examine the line. */
+                let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(line);
+                
+                /* Update the totals. */
+                wrd_total += wrd_cnt;
+                byt_total += byt_cnt;
+                cha_total += cha_cnt;      
+                lines += 1;
+                
+                /* Had the new longest line been found? */
+                if cha_cnt > longest_line {
+                    longest_line = cha_cnt;
+                };
             }
+            
+            /* Report back about the file */
+            output_stats(raw_filepath.display().to_string(), &args, wrd_total, lines, cha_total, byt_total, longest_line);
         }
     }
 }
