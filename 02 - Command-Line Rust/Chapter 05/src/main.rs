@@ -81,29 +81,33 @@ fn output_stats(
     byte_total: usize,
     longest_line: usize,
 ) {
+    let pad_size = 8;
+
     /* Print file statistics. */
     if args.bytes {
-        print!("\t{}", byte_total);
+        print!("{:>width$}", byte_total, width = pad_size);
     }
 
     if args.lines {
-        print!("\t{}", line_total);
+        print!("{:>width$}", line_total, width = pad_size);
     }
 
     if args.chars {
-        print!("\t{}", char_total);
+        print!("{:>width$}", char_total, width = pad_size);
     }
 
     if args.words {
-        print!("\t{}", wrd_total);
+        print!("{:>width$}", wrd_total, width = pad_size);
     }
 
     if args.max_line_len {
-        print!("\t{}", longest_line);
+        print!("{:>width$}", longest_line, width = pad_size);
     }
 
     /* Print the filename. */
-    println!("{}", filename);
+    if args.files.is_some() {
+        println!(" {}", filename);
+    }
 }
 
 fn main() {
