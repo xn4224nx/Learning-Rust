@@ -136,21 +136,44 @@ fn main() {
 
     /* If no files have been provided read from STDIN. */
     if args.files.is_none() {
-        let mut stdin_input = String::new();
-        io::stdin()
-            .read_line(&mut stdin_input)
-            .expect("Error reading STDIN.");
+        let mut wrd_total = 0;
+        let mut lines = 0;
+        let mut cha_total = 0;
+        let mut byt_total = 0;
+        let mut longest_line = 0;
 
-        let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&stdin_input);
+        /* Read the file line by line. */
+        for raw_line in io::stdin().lock().lines() {
+            let Ok(line) = raw_line else {
+                continue;
+            };
+
+            /*  Examine the line. */
+            let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&String::from(line));
+
+            /* Update the totals. */
+            wrd_total += wrd_cnt;
+            byt_total += byt_cnt;
+            cha_total += cha_cnt;
+            lines += 1;
+
+            /* Had the new longest line been found? */
+            if cha_cnt > longest_line {
+                longest_line = cha_cnt;
+            };
+        }
+
+        /* Report back about the STDIN */
         output_stats(
             String::from(""),
             &args,
-            wrd_cnt,
-            1,
-            cha_cnt,
-            byt_cnt,
-            cha_cnt,
+            wrd_total + lines,
+            lines,
+            cha_total,
+            byt_total + 2 * lines,
+            longest_line,
         );
+        println!();
 
     /* Otherwise Iterate over every file and calculate its statistics. */
     } else {
