@@ -193,6 +193,9 @@ fn main() {
                 if cha_cnt > longest_line {
                     longest_line = cha_cnt;
                 };
+
+                /* Empty the line buffer. */
+                line_buf.clear();
             }
 
             /* Report back about the file */
