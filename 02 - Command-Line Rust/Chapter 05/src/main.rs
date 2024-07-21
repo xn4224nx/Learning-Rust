@@ -47,8 +47,8 @@ struct Args {
     max_line_len: bool,
 }
 
-/// Count the words, bytes and chars in a string.
-fn count_within_a_string(input: String) -> (usize, usize, usize) {
+/// Count the words, chars and bytes in a string.
+fn count_within_a_string(input: &String) -> (usize, usize, usize) {
     let mut wrd_cnt = 0;
     let mut char_cnt = 0;
     let mut in_whitespace = true;
@@ -127,7 +127,7 @@ fn main() {
             .read_line(&mut stdin_input)
             .expect("Error reading STDIN.");
 
-        let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(stdin_input);
+        let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&stdin_input);
         output_stats(
             String::from(""),
             &args,
@@ -161,15 +161,13 @@ fn main() {
             let mut byt_total = 0;
             let mut longest_line = 0;
 
-            /* Read the file line by line. */
-            let file = BufReader::new(fp);
-            for raw_line in file.lines() {
-                let Ok(line) = raw_line else {
-                    continue;
-                };
+            let mut line_buf = String::new();
+            let mut file = BufReader::new(fp);
 
+            /* Read the file line by line. */
+            while file.read_line(&mut line_buf).unwrap() != 0 {
                 /*  Examine the line. */
-                let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(line);
+                let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&line_buf);
 
                 /* Update the totals. */
                 wrd_total += wrd_cnt;
