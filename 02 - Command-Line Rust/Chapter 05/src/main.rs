@@ -177,6 +177,13 @@ fn main() {
 
     /* Otherwise Iterate over every file and calculate its statistics. */
     } else {
+        /* Make a record of the totals */
+        let mut all_wrd_total = 0;
+        let mut all_lines = 0;
+        let mut all_cha_total = 0;
+        let mut all_byt_total = 0;
+        let mut all_longest_line = 0;
+
         for raw_filepath in args.files.as_ref().unwrap() {
             /* Verify that the file exists. */
             if !raw_filepath.is_file() {
@@ -230,6 +237,26 @@ fn main() {
                 cha_total,
                 byt_total,
                 longest_line,
+            );
+
+            all_wrd_total += wrd_total;
+            all_lines += lines;
+            all_cha_total += cha_total;
+            all_byt_total += byt_total;
+            if longest_line > all_longest_line {
+                all_longest_line = longest_line;
+            };
+        }
+
+        if args.files.as_ref().expect("ERROR no Files!").len() >= 2 {
+            output_stats(
+                String::from("total"),
+                &args,
+                all_wrd_total,
+                all_lines,
+                all_cha_total,
+                all_byt_total,
+                all_longest_line,
             );
         }
     }
