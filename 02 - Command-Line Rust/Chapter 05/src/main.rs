@@ -112,12 +112,12 @@ fn output_stats(
 
 fn main() {
     let mut args = Args::parse();
-    
+
     /* Refuse to further process when both chars and bytes have been selected. */
     if args.bytes && args.chars {
         panic!("the argument '--chars' cannot be used with '--bytes'")
     }
-    
+
     /* If no options have been selected set the output to lines, words, bytes. */
     if !args.bytes && !args.lines && !args.chars && !args.words && !args.max_line_len {
         args.lines = true;
