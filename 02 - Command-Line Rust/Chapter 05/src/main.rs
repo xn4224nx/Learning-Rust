@@ -119,7 +119,16 @@ fn main() {
     }
 
     /* If no options have been selected set the output to lines, words, bytes. */
-    if !args.bytes && !args.lines && !args.chars && !args.words && !args.max_line_len {
+    if [
+        args.bytes,
+        args.lines,
+        args.chars,
+        args.words,
+        args.max_line_len,
+    ]
+    .iter()
+    .all(|x| x == &false)
+    {
         args.lines = true;
         args.words = true;
         args.bytes = true;
