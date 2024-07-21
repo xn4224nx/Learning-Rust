@@ -84,20 +84,20 @@ fn output_stats(
     let pad_size = 8;
 
     /* Print file statistics. */
-    if args.bytes {
-        print!("{:>width$}", byte_total, width = pad_size);
-    }
-
     if args.lines {
         print!("{:>width$}", line_total, width = pad_size);
     }
 
-    if args.chars {
-        print!("{:>width$}", char_total, width = pad_size);
-    }
-
     if args.words {
         print!("{:>width$}", wrd_total, width = pad_size);
+    }
+
+    if args.bytes {
+        print!("{:>width$}", byte_total, width = pad_size);
+    }
+
+    if args.chars {
+        print!("{:>width$}", char_total, width = pad_size);
     }
 
     if args.max_line_len {
