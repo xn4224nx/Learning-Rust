@@ -144,14 +144,14 @@ fn main() {
             /* Verify that the file exists. */
             if !raw_filepath.is_file() {
                 let err_filename = raw_filepath.to_str().unwrap_or("Unparsable Filename");
-                println!("File Access Error - '{}'", err_filename);
+                eprintln!("{}: File Access Error (os error 2)", err_filename);
                 continue;
             };
 
             /* Try and open the file. */
             let Ok(fp) = File::open(&raw_filepath) else {
                 let err_filename = raw_filepath.to_str().unwrap_or("Unparsable Filename");
-                println!("File Read Error - '{}'", err_filename);
+                eprintln!("{}: File Read Error", err_filename);
                 continue;
             };
 
