@@ -7,8 +7,10 @@
 
 use clap::Parser;
 use std::{
+    cmp::max,
     fs::File,
     io::{self, prelude::*, BufReader},
+    ops::Add,
     path::PathBuf,
 };
 
@@ -47,6 +49,29 @@ struct Args {
     max_line_len: bool,
 }
 
+#[derive(Default)]
+struct FileStats {
+    wrd_total: usize,
+    line_total: usize,
+    char_total: usize,
+    byte_total: usize,
+    longest_line: usize,
+}
+
+impl Add for FileStats {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Self {
+            wrd_total: self.wrd_total + other.wrd_total,
+            line_total: self.line_total + other.line_total,
+            char_total: self.char_total + other.char_total,
+            byte_total: self.byte_total + other.byte_total,
+            longest_line: max(self.longest_line, other.longest_line),
+        }
+    }
+}
+
 /// Count the words, chars and bytes in a string.
 fn count_within_a_string(input: &String) -> (usize, usize, usize) {
     let mut wrd_cnt = 0;
@@ -64,46 +89,31 @@ fn count_within_a_string(input: &String) -> (usize, usize, usize) {
         } else if !str_char.is_whitespace() {
             in_whitespace = false;
         }
-
         char_cnt += 1;
     }
-
     return (wrd_cnt, char_cnt, input.len());
 }
 
 /// Output a files statistics
-fn output_stats(
-    filename: String,
-    args: &Args,
-    wrd_total: usize,
-    line_total: usize,
-    char_total: usize,
-    byte_total: usize,
-    longest_line: usize,
-) {
+fn output_stats(filename: String, args: &Args, stat: &FileStats) {
     let pad_size = 8;
 
     /* Print file statistics. */
     if args.lines {
-        print!("{:>width$}", line_total, width = pad_size);
+        print!("{:>width$}", stat.line_total, width = pad_size);
     }
-
     if args.words {
-        print!("{:>width$}", wrd_total, width = pad_size);
+        print!("{:>width$}", stat.wrd_total, width = pad_size);
     }
-
     if args.bytes {
-        print!("{:>width$}", byte_total, width = pad_size);
+        print!("{:>width$}", stat.byte_total, width = pad_size);
     }
-
     if args.chars {
-        print!("{:>width$}", char_total, width = pad_size);
+        print!("{:>width$}", stat.char_total, width = pad_size);
     }
-
     if args.max_line_len {
-        print!("{:>width$}", longest_line, width = pad_size);
+        print!("{:>width$}", stat.longest_line, width = pad_size);
     }
-
     /* Print the filename. */
     if args.files.is_some() {
         println!(" {}", filename);
@@ -111,15 +121,11 @@ fn output_stats(
 }
 
 /// Determine the key characteristics of a file buffer
-fn analyse_buffer<R>(mut fp_buff: BufReader<R>) -> (usize, usize, usize, usize, usize)
+fn analyse_buffer<R>(mut fp_buff: BufReader<R>) -> FileStats
 where
     R: std::io::Read,
 {
-    let mut wrd_total = 0;
-    let mut lines = 0;
-    let mut cha_total = 0;
-    let mut byt_total = 0;
-    let mut longest_line = 0;
+    let mut stat: FileStats = Default::default();
     let mut line_buf = String::new();
 
     /* Read the file line by line. */
@@ -128,21 +134,20 @@ where
         let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&line_buf);
 
         /* Update the totals. */
-        wrd_total += wrd_cnt;
-        byt_total += byt_cnt;
-        cha_total += cha_cnt;
-        lines += 1;
+        stat.wrd_total += wrd_cnt;
+        stat.byte_total += byt_cnt;
+        stat.char_total += cha_cnt;
+        stat.line_total += 1;
 
         /* Had the new longest line been found? */
-        if cha_cnt > longest_line {
-            longest_line = cha_cnt;
+        if cha_cnt > stat.longest_line {
+            stat.longest_line = cha_cnt;
         };
 
         /* Empty the line buffer. */
         line_buf.clear();
     }
-
-    return (wrd_total, lines, cha_total, byt_total, longest_line);
+    return stat;
 }
 
 fn main() {
@@ -163,29 +168,16 @@ fn main() {
     /* If no files have been provided read from STDIN. */
     if args.files.is_none() {
         /* Read STDIN and count the key parts */
-        let (wrd_total, lines, cha_total, byt_total, longest_line) =
-            analyse_buffer(BufReader::new(io::stdin()));
+        let f_stat = analyse_buffer(BufReader::new(io::stdin()));
 
         /* Report back about the STDIN */
-        output_stats(
-            String::from(""),
-            &args,
-            wrd_total,
-            lines,
-            cha_total,
-            byt_total,
-            longest_line,
-        );
+        output_stats(String::from(""), &args, &f_stat);
         println!();
 
     /* Otherwise Iterate over every file and calculate its statistics. */
     } else {
         /* Make a record of the totals */
-        let mut all_wrd_total = 0;
-        let mut all_lines = 0;
-        let mut all_cha_total = 0;
-        let mut all_byt_total = 0;
-        let mut all_longest_line = 0;
+        let mut tot_stat: FileStats = Default::default();
 
         for raw_filepath in args.files.as_ref().unwrap() {
             /* Verify that the file exists. */
@@ -203,39 +195,15 @@ fn main() {
             };
 
             /* Analyse the file */
-            let (wrd_total, lines, cha_total, byt_total, longest_line) =
-                analyse_buffer(BufReader::new(fp));
+            let f_stat = analyse_buffer(BufReader::new(fp));
 
             /* Report back about the file */
-            output_stats(
-                raw_filepath.display().to_string(),
-                &args,
-                wrd_total,
-                lines,
-                cha_total,
-                byt_total,
-                longest_line,
-            );
-
-            all_wrd_total += wrd_total;
-            all_lines += lines;
-            all_cha_total += cha_total;
-            all_byt_total += byt_total;
-            if longest_line > all_longest_line {
-                all_longest_line = longest_line;
-            };
+            output_stats(raw_filepath.display().to_string(), &args, &f_stat);
+            tot_stat = tot_stat + f_stat;
         }
 
         if args.files.as_ref().expect("ERROR no Files!").len() >= 2 {
-            output_stats(
-                String::from("total"),
-                &args,
-                all_wrd_total,
-                all_lines,
-                all_cha_total,
-                all_byt_total,
-                all_longest_line,
-            );
+            output_stats(String::from("total"), &args, &tot_stat);
         }
     }
 }
