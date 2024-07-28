@@ -110,6 +110,41 @@ fn output_stats(
     }
 }
 
+/// Determine the key characteristics of a file buffer
+fn analyse_buffer<R>(mut fp_buff: BufReader<R>) -> (usize, usize, usize, usize, usize)
+where
+    R: std::io::Read,
+{
+    let mut wrd_total = 0;
+    let mut lines = 0;
+    let mut cha_total = 0;
+    let mut byt_total = 0;
+    let mut longest_line = 0;
+    let mut line_buf = String::new();
+
+    /* Read the file line by line. */
+    while fp_buff.read_line(&mut line_buf).unwrap() != 0 {
+        /*  Examine the line. */
+        let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&line_buf);
+
+        /* Update the totals. */
+        wrd_total += wrd_cnt;
+        byt_total += byt_cnt;
+        cha_total += cha_cnt;
+        lines += 1;
+
+        /* Had the new longest line been found? */
+        if cha_cnt > longest_line {
+            longest_line = cha_cnt;
+        };
+
+        /* Empty the line buffer. */
+        line_buf.clear();
+    }
+
+    return (wrd_total, lines, cha_total, byt_total, longest_line);
+}
+
 fn main() {
     let mut args = Args::parse();
 
@@ -136,41 +171,18 @@ fn main() {
 
     /* If no files have been provided read from STDIN. */
     if args.files.is_none() {
-        let mut wrd_total = 0;
-        let mut lines = 0;
-        let mut cha_total = 0;
-        let mut byt_total = 0;
-        let mut longest_line = 0;
-
-        /* Read the file line by line. */
-        for raw_line in io::stdin().lock().lines() {
-            let Ok(line) = raw_line else {
-                continue;
-            };
-
-            /*  Examine the line. */
-            let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&String::from(line));
-
-            /* Update the totals. */
-            wrd_total += wrd_cnt;
-            byt_total += byt_cnt;
-            cha_total += cha_cnt;
-            lines += 1;
-
-            /* Had the new longest line been found? */
-            if cha_cnt > longest_line {
-                longest_line = cha_cnt;
-            };
-        }
+        /* Read STDIN and count the key parts */
+        let (wrd_total, lines, cha_total, byt_total, longest_line) =
+            analyse_buffer(BufReader::new(io::stdin()));
 
         /* Report back about the STDIN */
         output_stats(
             String::from(""),
             &args,
-            wrd_total + lines,
+            wrd_total,
             lines,
             cha_total,
-            byt_total + 2 * lines,
+            byt_total,
             longest_line,
         );
         println!();
@@ -199,34 +211,9 @@ fn main() {
                 continue;
             };
 
-            let mut wrd_total = 0;
-            let mut lines = 0;
-            let mut cha_total = 0;
-            let mut byt_total = 0;
-            let mut longest_line = 0;
-
-            let mut line_buf = String::new();
-            let mut file = BufReader::new(fp);
-
-            /* Read the file line by line. */
-            while file.read_line(&mut line_buf).unwrap() != 0 {
-                /*  Examine the line. */
-                let (wrd_cnt, cha_cnt, byt_cnt) = count_within_a_string(&line_buf);
-
-                /* Update the totals. */
-                wrd_total += wrd_cnt;
-                byt_total += byt_cnt;
-                cha_total += cha_cnt;
-                lines += 1;
-
-                /* Had the new longest line been found? */
-                if cha_cnt > longest_line {
-                    longest_line = cha_cnt;
-                };
-
-                /* Empty the line buffer. */
-                line_buf.clear();
-            }
+            /* Analyse the file */
+            let (wrd_total, lines, cha_total, byt_total, longest_line) =
+                analyse_buffer(BufReader::new(fp));
 
             /* Report back about the file */
             output_stats(
