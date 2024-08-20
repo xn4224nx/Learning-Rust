@@ -11,4 +11,4 @@ Cargo.lock
 **/*.rs.bk
 
 # Kate temp files
-.kate-swp
+*.kate-swp
