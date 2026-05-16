@@ -16,6 +16,10 @@ The resources used in learning are as follows:
 
 5.  [Practical Rust Projects](https://github.com/Apress/Practical-Rust-Projects-2nd-ed.) - Go beyond the basics and build complete applications using the Rust programming language, updated for Rust 2021 edition. The applications you'll build over the course of this book include a high-performance web client, an embedded computer (for a robot, for example), a game, a serverless web app, and an application that incorporates AI and machine learning.
 
+6. [First Steps in Game Development With Rust and Bevy](https://blog.jetbrains.com/rust/2025/02/04/first-steps-in-game-development-with-rust-and-bevy/) - A short tutorial on how to create an endless running game in the Rust game engine Bevy.
+
+7. [The Impatient Programmer's Guide to Bevy and Rust: Build a 2D Game from Scratch](https://dev.to/jamesfebin/the-impatient-programmers-guide-to-bevy-and-rust-chapter-1-let-there-be-a-player-17cb) - A book on how to construct a simple 2D game in Bevy.
+
 ## Future Resources
 
 Some viable books to use in future learning:
