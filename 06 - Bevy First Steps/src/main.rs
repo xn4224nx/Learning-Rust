@@ -9,16 +9,17 @@ use bevy_rand::prelude::{EntropyPlugin, GlobalRng};
 use rand_core::Rng;
 
 const GAME_SPEED: f32 = 400.0;
+const GRAVITY: f32 = -800.0;
 
-const GROUND_LEVEL: f32 = -100.0;
-const GROUND_SIZE: Vec2 = Vec2::new(30.0, 50.0);
+const GROUND_LEVEL: f32 = -50.0;
+const GROUND_SIZE: Vec2 = Vec2::new(900.0, 10.0);
 const GROUND_EDGE: f32 = GROUND_SIZE.x / 2.0;
 
 const PLAYER_X: f32 = -300.0;
+const PLAYER_SIZE: Vec2 = Vec2::new(30.0, 50.0);
 const JUMP_FORCE: f32 = 600.0;
-const GRAVITY: f32 = -800.0;
-const SPAWN_INTERVAL: f32 = 1.0;
 
+const SPAWN_INTERVAL: f32 = 1.0;
 const OBSTACLE_SIZE: Vec2 = Vec2::new(30.0, 30.0);
 const OBSTACLE_COLOR: Color = Color::srgb(1.0, 0.0, 0.0);
 
@@ -64,7 +65,7 @@ fn setup(mut cmds: Commands) {
         Player,
         Sprite {
             color: Color::srgb(0.5, 1.0, 1.0),
-            custom_size: Some(Vec2::new(30.0, 50.0)),
+            custom_size: Some(PLAYER_SIZE),
             ..default()
         },
         Transform::from_xyz(PLAYER_X, GROUND_LEVEL, 0.0),
@@ -75,10 +76,10 @@ fn setup(mut cmds: Commands) {
     cmds.spawn((
         Sprite {
             color: Color::srgb(0.5, 0.5, 0.5),
-            custom_size: Some(Vec2::new(800.0, 10.0)),
+            custom_size: Some(GROUND_SIZE),
             ..default()
         },
-        Transform::from_xyz(0.0, GROUND_LEVEL - 30.0, 0.0),
+        Transform::from_xyz(0.0, GROUND_LEVEL - 3.0 * GROUND_SIZE.y, 0.0),
     ));
 }
 
@@ -130,7 +131,7 @@ fn spawn_obstacles(
 
     if spawn_timer.0.is_finished() {
         let obst_x = GROUND_EDGE;
-        let obst_y = GROUND_LEVEL + (rng.next_u32() % 50) as f32;
+        let obst_y = GROUND_LEVEL + (rng.next_u32() % 100) as f32;
 
         cmds.spawn((
             Obstacle,
