@@ -9,7 +9,7 @@ use bevy_rand::prelude::{EntropyPlugin, GlobalRng};
 use rand_core::Rng;
 
 const GAME_SPEED: f32 = 400.0;
-const GRAVITY: f32 = -800.0;
+const GRAVITY: f32 = -900.0;
 
 const GROUND_LEVEL: f32 = -50.0;
 const GROUND_SIZE: Vec2 = Vec2::new(900.0, 10.0);
@@ -35,11 +35,28 @@ struct Obstacle;
 #[derive(Resource)]
 struct ObstacleSpawningTimer(Timer);
 
+#[derive(Component)]
+struct Health(usize);
+
+#[derive(Component)]
+struct HealthInfo;
+
+#[derive(States, Debug, Clone, PartialEq, Eq, Hash)]
+enum GameState {
+    InGame,
+    GameOver,
+}
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugins(EntropyPlugin::<WyRand>::default())
         .add_systems(Startup, setup)
+        .insert_resource(ObstacleSpawningTimer(Timer::from_seconds(
+            SPAWN_INTERVAL,
+            TimerMode::Repeating,
+        )))
+        .insert_state(GameState::InGame)
         .add_systems(
             Update,
             (
@@ -48,16 +65,18 @@ fn main() {
                 player_movement,
                 spawn_obstacles,
                 move_obstacles,
-            ),
+                detect_collision,
+                render_health_info,
+                check_health,
+            )
+                .run_if(in_state(GameState::InGame)),
         )
-        .insert_resource(ObstacleSpawningTimer(Timer::from_seconds(
-            SPAWN_INTERVAL,
-            TimerMode::Repeating,
-        )))
+        .add_systems(OnEnter(GameState::GameOver), game_over)
         .run();
 }
 
 fn setup(mut cmds: Commands) {
+    let initial_health = 10;
     cmds.spawn(Camera2d::default());
 
     /* Spawn the player. */
@@ -70,6 +89,7 @@ fn setup(mut cmds: Commands) {
         },
         Transform::from_xyz(PLAYER_X, GROUND_LEVEL, 0.0),
         Velocity(Vec3::ZERO),
+        Health(initial_health),
     ));
 
     /* Spawn the ground. */
@@ -80,6 +100,12 @@ fn setup(mut cmds: Commands) {
             ..default()
         },
         Transform::from_xyz(0.0, GROUND_LEVEL - 3.0 * GROUND_SIZE.y, 0.0),
+    ));
+
+    /* Spawn the player health ticker. */
+    cmds.spawn((
+        HealthInfo,
+        Text::new(format!("Player Health: {}", initial_health)),
     ));
 }
 
@@ -159,4 +185,69 @@ fn move_obstacles(
             cmds.entity(ent_obj).despawn();
         }
     }
+}
+
+/// Has the player hit something, if so remove the obstacle.
+fn detect_collision(
+    mut cmds: Commands,
+    mut player_query: Query<(&Transform, &mut Health), With<Player>>,
+    obstacle_query: Query<(Entity, &Transform), With<Obstacle>>,
+) {
+    if let Ok((player_transform, mut health)) = player_query.single_mut() {
+        for (obst_ent, obst_trans) in obstacle_query.iter() {
+            if player_transform
+                .translation
+                .distance(obst_trans.translation)
+                < 50.0
+            {
+                health.0 -= 1;
+                cmds.entity(obst_ent).despawn();
+            }
+        }
+    }
+}
+
+/// Show the current player health on the screen.
+fn render_health_info(
+    player_query: Query<&mut Health, With<Player>>,
+    mut health_info_query: Query<&mut Text, With<HealthInfo>>,
+) {
+    if let Ok(mut health_info) = health_info_query.single_mut() {
+        if let Ok(health) = player_query.single() {
+            health_info.0 = format!("Health: {}", health.0);
+        }
+    }
+}
+
+/// Has the player run out of health
+fn check_health(
+    player_query: Query<&Health, With<Player>>,
+    mut game_state: ResMut<NextState<GameState>>,
+) {
+    if let Ok(Health(health)) = player_query.single() {
+        if *health == 0 {
+            game_state.set(GameState::GameOver);
+        }
+    }
+}
+
+/// Show the game over screen
+fn game_over(mut cmds: Commands) {
+    cmds.spawn((Node {
+        position_type: PositionType::Absolute,
+        left: Val::Percent(10.0),
+        right: Val::Percent(10.0),
+        top: Val::Percent(15.0),
+        bottom: Val::Percent(15.0),
+        justify_content: JustifyContent::Center,
+        ..default()
+    },))
+        .with_children(|bld| {
+            bld.spawn((
+                Text(String::from("GAME OVER")),
+                TextFont::from_font_size(160.0),
+                TextLayout::new_with_justify(Justify::Center).with_no_wrap(),
+                TextColor(Color::srgb(1.0, 0.0, 0.0)),
+            ));
+        });
 }
