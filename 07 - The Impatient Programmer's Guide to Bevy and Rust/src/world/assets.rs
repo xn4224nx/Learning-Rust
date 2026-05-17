@@ -3,7 +3,7 @@
  * ============
  */
 
-use bevy::{prelude::*, sprite::Anchor};
+use bevy::prelude::*;
 use bevy_procedural_tilemaps::prelude::*;
 
 use crate::world::tilemap::TILEMAP;
