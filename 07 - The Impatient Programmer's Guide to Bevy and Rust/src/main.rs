@@ -6,15 +6,12 @@
 mod characters;
 mod world;
 
+use crate::world::generate::{map_pixel_dimensions, setup_generator};
 use bevy::{
     prelude::*,
     window::{Window, WindowPlugin, WindowResolution},
 };
-
 use bevy_procedural_tilemaps::prelude::*;
-
-//use crate::avatar::AvatarPlugin;
-use crate::world::generate::{map_pixel_dimensions, setup_generator};
 
 fn main() {
     let map_size = map_pixel_dimensions();
@@ -40,7 +37,6 @@ fn main() {
         .add_plugins(ProcGenSimplePlugin::<Cartesian3D, Sprite>::default())
         .add_plugins(characters::CharactersPlugin)
         .add_systems(Startup, (setup_camera, setup_generator))
-        //.add_plugins(AvatarPlugin)
         .run();
 }
 
