@@ -3,7 +3,7 @@
  * https://dev.to/jamesfebin/
  */
 
-mod avatar;
+mod characters;
 mod world;
 
 use bevy::{
@@ -13,7 +13,7 @@ use bevy::{
 
 use bevy_procedural_tilemaps::prelude::*;
 
-use crate::avatar::AvatarPlugin;
+//use crate::avatar::AvatarPlugin;
 use crate::world::generate::{map_pixel_dimensions, setup_generator};
 
 fn main() {
@@ -38,8 +38,9 @@ fn main() {
                 .set(ImagePlugin::default_nearest()),
         )
         .add_plugins(ProcGenSimplePlugin::<Cartesian3D, Sprite>::default())
+        .add_plugins(characters::CharactersPlugin)
         .add_systems(Startup, (setup_camera, setup_generator))
-        .add_plugins(AvatarPlugin)
+        //.add_plugins(AvatarPlugin)
         .run();
 }
 
