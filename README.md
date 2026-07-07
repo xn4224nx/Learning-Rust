@@ -20,6 +20,8 @@ The resources used in learning are as follows:
 
 7. [The Impatient Programmer's Guide to Bevy and Rust: Build a 2D Game from Scratch](https://dev.to/jamesfebin/the-impatient-programmers-guide-to-bevy-and-rust-chapter-1-let-there-be-a-player-17cb) - A book on how to construct a simple 2D game in Bevy.
 
+8. [Bayesian Statistics the Fun Way](https://nostarch.com/learnbayes) - Understanding Statistics and Probability with Star Wars, LEGO, and Rubber Ducks.
+
 ## Future Resources
 
 Some viable books to use in future learning:
