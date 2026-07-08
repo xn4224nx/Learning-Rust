@@ -23,7 +23,7 @@ fn main() {
 
     println!(
         "P(rolling a 1 or 20) = {}",
-        1.0 - Binomial::new(0.1, 12).unwrap().pmf(0)
+        Binomial::new(0.1, 12).unwrap().pmf(1)
     );
 
     println!(
