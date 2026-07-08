@@ -1,0 +1,6 @@
+[package]
+name = "bayes_theorem_with_lego"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
