@@ -26,7 +26,7 @@ The resources used in learning are as follows:
 
 Some viable books to use in future learning:
 
-1.  [Hands-on Rust: Effective Learning through 2D Game Development and Play](https://github.com/thebracket/HandsOnRust) - Each chapter in this book presents hands-on, practical projects ranging from “Hello, World” to building a full dungeon crawler game.
+1. [Malware Development in Rust](https://nu11busters.github.io/rust-maldev-course/home/) - A course to aid in the development of malware in Rust.
 
 2. [Effective Rust: 35 Specific Ways to Improve Your Rust Code](https://effective-rust.com/) -  By focusing on the conceptual differences between Rust and other compiled languages, and by providing specific recommendations that programmers can easily follow, Effective Rust will soon have you writing fluent Rust, not just badly translated C++.
 
