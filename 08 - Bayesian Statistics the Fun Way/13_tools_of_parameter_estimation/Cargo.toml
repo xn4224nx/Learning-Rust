@@ -1,0 +1,7 @@
+[package]
+name = "tools_of_parameter_estimation"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+statrs = "0.18.0"
