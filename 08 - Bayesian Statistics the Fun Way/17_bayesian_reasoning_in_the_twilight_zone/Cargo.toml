@@ -1,0 +1,7 @@
+[package]
+name = "bayesian_reasoning_in_the_twilight_zone"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+statrs = "0.18.0"
