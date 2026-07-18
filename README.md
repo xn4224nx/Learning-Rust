@@ -24,6 +24,8 @@ The resources used in learning are as follows:
 
 9. [Malware Development in Rust](https://nu11busters.github.io/rust-maldev-course/home/) - A course to aid in the development of malware in Rust.
 
+10. [Rust Atomics and Locks](https://github.com/m-ou-se/rust-atomics-and-locks) - In this practical book, Mara Bos, team lead of the Rust library team, helps Rust programmers of all levels gain a clear understanding of low-level concurrency. You’ll learn everything about atomics and memory ordering and how they're combined with basic operating system APIs to build common primitives like mutexes and condition variables. Once you’re done, you’ll have a firm grasp of how Rust’s memory model, the processor, and the role of the operating system all fit together.
+
 ## Future Resources
 
 Some viable books to use in future learning:
@@ -36,6 +38,4 @@ Some viable books to use in future learning:
 
 4. [The Algorithm Design Manual](https://www.algorist.com/) - The reader-friendly The Algorithm Design Manual provides straightforward access to combinatorial algorithms technology, stressing design over analysis. The first part, Techniques, provides accessible instruction on methods for designing and analyzing computer algorithms. The second part, Resources, is intended for browsing and reference, and comprises the catalog of algorithmic resources, implementations and an extensive bibliography. 
 
-5. [Rust Atomics and Locks](https://github.com/m-ou-se/rust-atomics-and-locks) - In this practical book, Mara Bos, team lead of the Rust library team, helps Rust programmers of all levels gain a clear understanding of low-level concurrency. You’ll learn everything about atomics and memory ordering and how they're combined with basic operating system APIs to build common primitives like mutexes and condition variables. Once you’re done, you’ll have a firm grasp of how Rust’s memory model, the processor, and the role of the operating system all fit together.
-
-7. [Mathematics of Data Science](https://arxiv.org/abs/2607.11938) This book is about the mathematical foundations of data science. 
+5. [Mathematics of Data Science](https://arxiv.org/abs/2607.11938) This book is about the mathematical foundations of data science. 
