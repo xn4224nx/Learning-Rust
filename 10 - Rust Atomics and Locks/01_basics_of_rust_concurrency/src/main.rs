@@ -3,8 +3,9 @@
  * =====================================
  */
 
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::thread;
+use std::time::Duration;
 
 fn main() {
     let tr1 = thread::spawn(f);
@@ -51,6 +52,26 @@ fn main() {
         }
     });
     dbg!(c);
+
+    /* Mutex */
+    let total = Mutex::new(0);
+    thread::scope(|s| {
+        /* Spawn ten threads. */
+        for _ in 0..10 {
+            s.spawn(|| {
+                let mut guard = total.lock().unwrap();
+                for _ in 0..100 {
+                    *guard += 1;
+                }
+
+                drop(guard);
+
+                thread::sleep(Duration::from_secs(1));
+            });
+        }
+    });
+
+    println!("Total = {}", total.into_inner().unwrap());
 }
 
 fn f() {
