@@ -1,5 +1,5 @@
 [package]
-name = "basics_of_rust_concurrency"
+name = "reference_counting"
 version = "0.1.0"
 edition = "2024"
 
