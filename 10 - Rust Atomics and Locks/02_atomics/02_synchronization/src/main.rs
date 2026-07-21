@@ -2,10 +2,10 @@
  * Chapter 2. Atomics
  * ==================
  *
- * Every time the background thread finishes processing an item, it stores the
- * number of processed items in an AtomicUsize. Meanwhile, the main thread shows
- * that number to the user to inform them of the progress, about once per
- * second.
+ * The main thread now uses park_timeout rather than sleep, such that it can be
+ * interrupted.Now, any status updates are immediately reported to the user,
+ * while still repeating the last update every second to show that the program
+ * is still running.
  */
 
 use std::io::Write;
