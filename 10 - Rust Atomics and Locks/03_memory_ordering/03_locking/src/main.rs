@@ -2,14 +2,9 @@
  * Chapter 3. Memory Ordering
  * ==========================
  *
- * Release and acquire memory ordering are used in a pair to form a
- * happens-before relationship between threads. Release memory ordering applies
- * to store operations, while Acquire memory ordering applies to load
- * operations.
- *
- * A happens-before relationship is formed when an acquire-load operation
- * observes the result of a release-store operation. In this case, the store and
- * everything before it, happened before the load and everything after it.
+ * When locking, they use an atomic operation to check if it was unlocked, using
+ * acquire ordering, while also (atomically) changing the state to “locked.”
+ * When unlocking, they set the state back to “unlocked” using release ordering.
  */
 
 use std::sync::atomic::AtomicBool;
