@@ -26,6 +26,8 @@ The resources used in learning are as follows:
 
 10. [Rust Atomics and Locks](https://github.com/m-ou-se/rust-atomics-and-locks) - In this practical book, Mara Bos, team lead of the Rust library team, helps Rust programmers of all levels gain a clear understanding of low-level concurrency. You’ll learn everything about atomics and memory ordering and how they're combined with basic operating system APIs to build common primitives like mutexes and condition variables. Once you’re done, you’ll have a firm grasp of how Rust’s memory model, the processor, and the role of the operating system all fit together.
 
+11. [Async Rust](https://www.oreilly.com/library/view/async-rust/9781098149086/) - Authors Maxwell Flitton and Caroline Morton also show you how to implement the Tokio software library to help you with incoming traffic, communicate between threads with shared memory and channels, and design a range of complex solutions using actors. You'll also learn to perform unit and end-to-end tests on a Rust async system.
+
 ## Future Resources
 
 Some viable books to use in future learning:
